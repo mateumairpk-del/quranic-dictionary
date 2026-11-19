@@ -1,0 +1,25 @@
+{
+"name": "Quranic Dictionary - 500 Essential Words",
+"short_name": "Quranic Dict",
+"description": "Learn 500 Essential Quranic Words, Namaz Duain & Ambiya Stories with Urdu & English Meanings.",
+"start_url": "./index.html",
+"scope": "./",
+"display": "standalone",
+"orientation": "portrait",
+"background_color": "#064E3B",
+"theme_color": "#064E3B",
+"icons": [
+{
+"src": "https://images.pexels.com/photos/34548784/pexels-photo-34548784.jpeg?auto=compress&cs=tinysrgb&w=192&h=192&fit=crop",
+"sizes": "192x192",
+"type": "image/jpeg",
+"purpose": "any"
+},
+{
+"src": "https://images.pexels.com/photos/34548784/pexels-photo-34548784.jpeg?auto=compress&cs=tinysrgb&w=512&h=512&fit=crop",
+"sizes": "512x512",
+"type": "image/jpeg",
+"purpose": "any"
+}
+]
+}

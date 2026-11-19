@@ -1,0 +1,2806 @@
+<!DOCTYPE html>
+<html lang="en" class="light">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>Quranic Dictionary - 500 Essential Words</title>
+  <meta name="theme-color" content="#064E3B" />
+  <meta name="mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="application-name" content="Quranic Dictionary" />
+  <meta name="referrer" content="no-referrer" />
+
+  <!-- Dynamic Android PWA Manifest & Icon -->
+  <link id="pwaManifestLink" rel="manifest" href="" />
+
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            emerald: {
+              850: '#064E3B',
+              950: '#022C22',
+            },
+            gold: {
+              400: '#FBBF24',
+              500: '#F59E0B',
+              600: '#D97706',
+            },
+            cream: '#FAF8F5',
+          },
+          fontFamily: {
+            sans: ['Inter', 'system-ui', 'sans-serif'],
+            arabic: ['Amiri', 'Scheherazade New', 'serif'],
+            urdu: ['Noto Nastaliq Urdu', 'serif'],
+          },
+        },
+      },
+    };
+  </script>
+
+  <!-- Google Fonts: Inter, Amiri (Arabic), Noto Nastaliq Urdu -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400&family=Inter:wght@400;500;600;700;800&family=Noto+Nastaliq+Urdu:wght@400;600;700&display=swap" rel="stylesheet" />
+
+  <!-- Font Awesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+
+  <style>
+    /* Custom Scrollbar & Mobile App Feel */
+    * {
+      -webkit-tap-highlight-color: transparent;
+    }
+    body {
+      font-family: 'Inter', sans-serif;
+      overscroll-behavior-y: none;
+    }
+    .no-scrollbar::-webkit-scrollbar {
+      display: none;
+    }
+    .no-scrollbar {
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+    }
+    .arabic-text {
+      font-family: 'Amiri', serif;
+      line-height: 2.35 !important;
+      padding-top: 0.25em;
+      padding-bottom: 0.25em;
+      display: block;
+    }
+    .urdu-text {
+      font-family: 'Noto Nastaliq Urdu', serif;
+      line-height: 2.5 !important;
+      padding-top: 0.2em;
+      padding-bottom: 0.2em;
+    }
+    /* 3D Flashcard Flip Animation */
+    .perspective-1000 {
+      perspective: 1000px;
+    }
+    .transform-style-3d {
+      transform-style: preserve-3d;
+      transition: transform 0.55s cubic-bezier(0.4, 0.2, 0.2, 1);
+    }
+    .rotate-y-180 {
+      transform: rotateY(180deg);
+    }
+    .backface-hidden {
+      backface-visibility: hidden;
+      -webkit-backface-visibility: hidden;
+    }
+    /* Subtle Islamic Geometric Pattern Overlay */
+    .islamic-pattern {
+      background-image: radial-gradient(rgba(255, 255, 255, 0.08) 1px, transparent 1px);
+      background-size: 16px 16px;
+    }
+    @keyframes pulseGlow {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.08); }
+    }
+    .speaking-pulse {
+      animation: pulseGlow 0.9s infinite ease-in-out;
+    }
+    @keyframes fadeSlideUp {
+      0% { opacity: 0; transform: translateY(14px) scale(0.985); }
+      100% { opacity: 1; transform: translateY(0) scale(1); }
+    }
+    @keyframes modalPopIn {
+      0% { opacity: 0; transform: scale(0.92) translateY(16px); }
+      100% { opacity: 1; transform: scale(1) translateY(0); }
+    }
+    @keyframes subtleFloat {
+      0%, 100% { transform: translateY(0px); }
+      50% { transform: translateY(-3px); }
+    }
+    @keyframes shimmerSweep {
+      0% { transform: translateX(-100%); }
+      100% { transform: translateX(100%); }
+    }
+    @keyframes splashPulse {
+      0%, 100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(251, 191, 36, 0.35); }
+      50% { transform: scale(1.04); box-shadow: 0 0 28px 6px rgba(251, 191, 36, 0.25); }
+    }
+    .splash-logo-glow {
+      animation: splashPulse 2s ease-in-out infinite;
+    }
+    .animate-tab-enter {
+      animation: fadeSlideUp 0.35s cubic-bezier(0.22, 1, 0.36, 1) both;
+    }
+    .animate-card-enter {
+      opacity: 0;
+      animation: fadeSlideUp 0.42s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+    }
+    .animate-modal-pop {
+      animation: modalPopIn 0.32s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+    }
+    .animate-float {
+      animation: subtleFloat 3s ease-in-out infinite;
+    }
+    .card-hover-lift {
+      transition: transform 0.25s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.25s ease, border-color 0.25s ease;
+    }
+    .card-hover-lift:hover {
+      transform: translateY(-2px);
+    }
+    .card-hover-lift:active {
+      transform: scale(0.99);
+    }
+    .progress-shimmer {
+      position: relative;
+      overflow: hidden;
+    }
+    .progress-shimmer::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.35), transparent);
+      animation: shimmerSweep 2.4s infinite;
+    }
+  </style>
+</head>
+<body class="bg-cream text-slate-800 dark:bg-slate-950 dark:text-slate-100 transition-colors duration-200 min-h-screen flex flex-col">
+
+  <!-- Animated Quran Splash / Loading Screen -->
+  <div id="splashScreen" class="fixed inset-0 z-[60] bg-gradient-to-br from-emerald-950 via-emerald-900 to-emerald-950 text-white flex flex-col items-center justify-center p-6 text-center islamic-pattern transition-opacity duration-500">
+    <div class="w-full max-w-xs flex flex-col items-center">
+      <div class="arabic-text text-xl sm:text-2xl text-amber-300 font-bold mb-5" dir="rtl">
+        بِسْمِ ٱللَّهِ ٱلرَّحْمَـٰنِ ٱلرَّحِيمِ
+      </div>
+
+      <!-- Quran Logo Image -->
+      <div class="w-28 h-28 rounded-3xl overflow-hidden border-2 border-amber-400/70 shadow-2xl splash-logo-glow bg-emerald-950 flex items-center justify-center mb-5">
+        <img
+          src="https://images.pexels.com/photos/34548784/pexels-photo-34548784.jpeg?auto=compress&cs=tinysrgb&w=400"
+          alt="Quranic Dictionary Logo"
+          onerror="this.onerror=null; this.src='data:image/svg+xml;utf8,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 200 200%22><rect width=%22200%22 height=%22200%22 fill=%22%23064E3B%22/><text x=%22100%22 y=%22125%22 font-size=%2295%22 text-anchor=%22middle%22 fill=%22%23FBBF24%22>📖</text></svg>';"
+          class="w-full h-full object-cover"
+        />
+      </div>
+
+      <h2 class="text-2xl font-extrabold tracking-tight text-white">
+        Quranic Dictionary
+      </h2>
+      <p class="text-xs text-emerald-200 mt-1">
+        500 Essential Words • 75% of Quran
+      </p>
+
+      <!-- Progress Bar -->
+      <div class="w-full mt-7">
+        <div class="flex items-center justify-between text-[11px] text-amber-300 font-bold mb-1.5 px-0.5">
+          <span id="splashStatusText">Quranic Alfaaz Tayyar Ho Rahe Hain...</span>
+          <span id="splashPercentText">0%</span>
+        </div>
+        <div class="w-full h-2.5 bg-black/40 rounded-full overflow-hidden border border-white/15 p-0.5">
+          <div id="splashProgressBar" class="h-full bg-gradient-to-r from-amber-400 via-amber-300 to-amber-500 rounded-full transition-all duration-150" style="width: 0%"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- App Container (Centered Android App Frame on Desktop, Full Screen on Mobile) -->
+  <div class="w-full max-w-lg mx-auto min-h-screen flex flex-col bg-cream dark:bg-slate-950 shadow-2xl relative border-x border-slate-200/70 dark:border-slate-800">
+
+    <!-- Top Android Status & App Header -->
+    <header class="sticky top-0 z-30 bg-gradient-to-br from-emerald-900 via-emerald-800 to-emerald-950 text-white shadow-lg islamic-pattern rounded-b-3xl px-4 pt-4 pb-5">
+      <div class="flex items-center justify-between mb-3">
+        <button onclick="startSplashSequence(true)" title="Replay Loading & Welcome Screen" class="flex items-center gap-3 text-left group active:scale-95 transition">
+          <div class="w-11 h-11 rounded-2xl overflow-hidden border-2 border-amber-400/70 shadow-md animate-float shrink-0 bg-emerald-950">
+            <img
+              src="https://images.pexels.com/photos/34548784/pexels-photo-34548784.jpeg?auto=compress&cs=tinysrgb&w=200"
+              alt="Quran Logo"
+              onerror="this.onerror=null; this.src='data:image/svg+xml;utf8,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><rect width=%22100%22 height=%22100%22 fill=%22%23064E3B%22/><text x=%2250%22 y=%2266%22 font-size=%2250%22 text-anchor=%22middle%22 fill=%22%23FBBF24%22>📖</text></svg>';"
+              class="w-full h-full object-cover"
+            />
+          </div>
+          <div>
+            <h1 class="text-lg font-extrabold tracking-tight leading-none flex items-center gap-1.5 group-hover:text-amber-200 transition">
+              Quranic Dictionary
+              <span class="text-[10px] font-bold uppercase tracking-wider bg-amber-500 text-emerald-950 px-1.5 py-0.5 rounded-full">75% Core</span>
+            </h1>
+            <p class="text-xs text-emerald-200 mt-1">500 Essential Words • Urdu & English</p>
+          </div>
+        </button>
+
+        <div class="flex items-center gap-2">
+          <!-- Daily Reminder Bell Button -->
+          <button onclick="openModal('reminderModal')" title="Daily Motivational Reminder" class="relative w-9 h-9 rounded-xl bg-white/10 hover:bg-white/20 active:scale-95 transition flex items-center justify-center text-amber-300">
+            <i class="fa-solid fa-bell text-sm"></i>
+            <span id="reminderActiveDot" class="hidden absolute top-1.5 right-1.5 w-2 h-2 rounded-full bg-amber-400 ring-2 ring-emerald-900"></span>
+          </button>
+          <!-- App Intro / Maqsad Button -->
+          <button onclick="openModal('welcomeModal')" title="App Ka Maqsad & Features" class="w-9 h-9 rounded-xl bg-white/10 hover:bg-white/20 active:scale-95 transition flex items-center justify-center text-emerald-100">
+            <i class="fa-solid fa-circle-info text-sm"></i>
+          </button>
+          <!-- Dark Mode Toggle -->
+          <button id="themeToggle" onclick="toggleDarkMode()" title="Toggle Theme" class="w-9 h-9 rounded-xl bg-white/10 hover:bg-white/20 active:scale-95 transition flex items-center justify-center text-emerald-100">
+            <i id="themeIcon" class="fa-solid fa-moon text-sm"></i>
+          </button>
+        </div>
+      </div>
+
+      <!-- Progress Bar & Quran Coverage Stat -->
+      <div class="bg-black/25 backdrop-blur-sm rounded-2xl p-3 border border-white/10">
+        <div class="flex items-center justify-between text-xs mb-1.5">
+          <span class="text-emerald-100 font-medium">
+            Learned: <strong id="headerLearnedCount" class="text-white">0</strong> / <span id="headerTotalWords">126</span> Core Roots
+          </span>
+          <span class="text-amber-300 font-bold">
+            ~<span id="headerQuranPercent">0.0</span>% of Quran
+          </span>
+        </div>
+        <div class="w-full h-2 bg-emerald-950/80 rounded-full overflow-hidden">
+          <div id="headerProgressBar" class="h-full bg-gradient-to-r from-amber-400 to-amber-500 rounded-full transition-all duration-700 ease-out progress-shimmer" style="width: 0%"></div>
+        </div>
+      </div>
+    </header>
+
+    <!-- Main Dynamic Content Area -->
+    <main id="appMain" class="flex-1 px-4 pt-4 pb-24 overflow-y-auto">
+      <!-- Content injected dynamically by JS -->
+    </main>
+
+    <!-- Toast Notification -->
+    <div id="toast" class="fixed bottom-24 left-1/2 -translate-x-1/2 z-50 pointer-events-none opacity-0 transition-all duration-300 transform translate-y-2">
+      <div class="bg-slate-900/95 dark:bg-emerald-900 text-white text-xs font-medium px-4 py-2.5 rounded-full shadow-xl border border-white/10 flex items-center gap-2">
+        <i class="fa-solid fa-circle-check text-amber-400"></i>
+        <span id="toastMsg">Saved!</span>
+      </div>
+    </div>
+
+    <!-- Bottom Android Navigation Bar -->
+    <nav class="fixed bottom-0 left-1/2 -translate-x-1/2 w-full max-w-lg z-30 bg-white/95 dark:bg-slate-900/95 backdrop-blur-md border-t border-slate-200 dark:border-slate-800 px-1 py-2 shadow-2xl">
+      <div class="grid grid-cols-6 gap-0.5">
+        <button onclick="switchTab('dictionary')" id="nav-dictionary" class="nav-btn flex flex-col items-center justify-center py-1.5 rounded-2xl transition active:scale-95 text-emerald-800 dark:text-amber-400 bg-emerald-50 dark:bg-emerald-950/70">
+          <i class="fa-solid fa-book-open text-sm mb-1"></i>
+          <span class="text-[9px] font-bold">Words</span>
+        </button>
+
+        <button onclick="switchTab('namaz')" id="nav-namaz" class="nav-btn flex flex-col items-center justify-center py-1.5 rounded-2xl transition active:scale-95 text-slate-500 dark:text-slate-400">
+          <i class="fa-solid fa-person-praying text-sm mb-1"></i>
+          <span class="text-[9px] font-bold">Namaz</span>
+        </button>
+
+        <button onclick="switchTab('ambiya')" id="nav-ambiya" class="nav-btn flex flex-col items-center justify-center py-1.5 rounded-2xl transition active:scale-95 text-slate-500 dark:text-slate-400">
+          <i class="fa-solid fa-scroll text-sm mb-1"></i>
+          <span class="text-[9px] font-bold">Ambiya</span>
+        </button>
+
+        <button onclick="switchTab('flashcards')" id="nav-flashcards" class="nav-btn flex flex-col items-center justify-center py-1.5 rounded-2xl transition active:scale-95 text-slate-500 dark:text-slate-400">
+          <i class="fa-solid fa-layer-group text-sm mb-1"></i>
+          <span class="text-[9px] font-bold">Cards</span>
+        </button>
+
+        <button onclick="switchTab('quiz')" id="nav-quiz" class="nav-btn flex flex-col items-center justify-center py-1.5 rounded-2xl transition active:scale-95 text-slate-500 dark:text-slate-400">
+          <i class="fa-solid fa-circle-question text-sm mb-1"></i>
+          <span class="text-[9px] font-bold">Quiz</span>
+        </button>
+
+        <button onclick="switchTab('progress')" id="nav-progress" class="nav-btn flex flex-col items-center justify-center py-1.5 rounded-2xl transition active:scale-95 text-slate-500 dark:text-slate-400">
+          <i class="fa-solid fa-chart-pie text-sm mb-1"></i>
+          <span class="text-[9px] font-bold">Progress</span>
+        </button>
+      </div>
+    </nav>
+  </div>
+
+  <!-- Welcome & App Maqsad Intro Modal -->
+  <div id="welcomeModal" class="fixed inset-0 z-50 hidden bg-black/75 backdrop-blur-md flex items-center justify-center p-3 sm:p-4 transition-opacity duration-300">
+    <div class="bg-white dark:bg-slate-900 w-full max-w-md rounded-3xl shadow-2xl border border-emerald-700/30 dark:border-slate-800 overflow-hidden max-h-[92vh] flex flex-col animate-modal-pop">
+      <!-- Top Decorative Header -->
+      <div class="bg-gradient-to-br from-emerald-900 via-emerald-800 to-emerald-950 text-white p-5 sm:p-6 text-center islamic-pattern relative shrink-0">
+        <div class="arabic-text text-xl text-amber-300 font-bold mb-1" dir="rtl">
+          بِسْمِ ٱللَّهِ ٱلرَّحْمَـٰنِ ٱلرَّحِيمِ
+        </div>
+        <div class="w-16 h-16 rounded-2xl overflow-hidden border-2 border-amber-400/70 mx-auto my-2.5 shadow-lg bg-emerald-950">
+          <img
+            src="https://images.pexels.com/photos/34548784/pexels-photo-34548784.jpeg?auto=compress&cs=tinysrgb&w=240"
+            alt="Quran Logo"
+            onerror="this.onerror=null; this.src='data:image/svg+xml;utf8,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><rect width=%22100%22 height=%22100%22 fill=%22%23064E3B%22/><text x=%2250%22 y=%2266%22 font-size=%2250%22 text-anchor=%22middle%22 fill=%22%23FBBF24%22>📖</text></svg>';"
+            class="w-full h-full object-cover"
+          />
+        </div>
+        <h2 class="text-xl font-extrabold tracking-tight">
+          Quranic Dictionary Mein Khush Amdeed!
+        </h2>
+        <p class="text-xs text-emerald-200 mt-1">
+          Quran Majeed ko samajh kar parhne ka asaan safar
+        </p>
+      </div>
+
+      <!-- Scrollable Intro & Features Body -->
+      <div class="p-5 overflow-y-auto space-y-4 text-xs sm:text-sm leading-relaxed">
+        <!-- App Ka Maqsad -->
+        <div class="p-3.5 rounded-2xl bg-emerald-50 dark:bg-emerald-950/50 border border-emerald-200/80 dark:border-emerald-800/50">
+          <h3 class="font-extrabold text-emerald-900 dark:text-amber-300 text-xs uppercase tracking-wider mb-1 flex items-center gap-1.5">
+            <i class="fa-solid fa-bullseye"></i> Is App Ka Maqsad Kya Hai?
+          </h3>
+          <p class="text-slate-700 dark:text-slate-200 text-xs leading-relaxed">
+            Hamara maqsad yeh hai ke jab aap <strong>Namaz</strong> mein ya <strong>Tilawat</strong> ke dauran Quran sunein aur parhein, to baghair kisi mushkil grammar ke <strong>75% tak Quran ka mafhoom</strong> khud samajh sakein — kyunke Quran ke chand bunyadi alfaaz hazaron martaba repeat hote hain!
+          </p>
+        </div>
+
+        <!-- Is App Mein Aap Ko Kya Milega -->
+        <div>
+          <h3 class="font-extrabold text-slate-800 dark:text-slate-200 text-xs uppercase tracking-wider mb-2.5 px-0.5">
+            Is App Mein Aap Ko Kya Milega:
+          </h3>
+          <div class="space-y-2.5">
+            <div class="flex items-start gap-3 p-2.5 rounded-2xl bg-slate-50 dark:bg-slate-800/70 border border-slate-200/60 dark:border-slate-700/60">
+              <div class="w-8 h-8 rounded-xl bg-emerald-100 dark:bg-emerald-900/60 text-emerald-800 dark:text-amber-300 flex items-center justify-center shrink-0 mt-0.5">
+                <i class="fa-solid fa-book-open text-xs"></i>
+              </div>
+              <div>
+                <div class="font-bold text-slate-900 dark:text-white text-xs">7 Lessons & Essential Alfaaz (Urdu + English)</div>
+                <div class="text-[11px] text-slate-600 dark:text-slate-300">Har lafz ka Arabic talaffuz (Audio), Urdu, Roman Urdu, English matlab aur Quranic Misaal.</div>
+              </div>
+            </div>
+
+            <div class="flex items-start gap-3 p-2.5 rounded-2xl bg-slate-50 dark:bg-slate-800/70 border border-slate-200/60 dark:border-slate-700/60">
+              <div class="w-8 h-8 rounded-xl bg-amber-100 dark:bg-amber-900/40 text-amber-700 dark:text-amber-300 flex items-center justify-center shrink-0 mt-0.5">
+                <i class="fa-solid fa-person-praying text-xs"></i>
+              </div>
+              <div>
+                <div class="font-bold text-slate-900 dark:text-white text-xs">Namaz Ki Masnoon Duain Aur Ambiya Ke Qissay</div>
+                <div class="text-[11px] text-slate-600 dark:text-slate-300">Sana, Ruku, Sajdah, Tashahhud, Durood aur Salam ke baad ki masnoon duayein tarjume aur audio ke sath.</div>
+              </div>
+            </div>
+
+            <div class="flex items-start gap-3 p-2.5 rounded-2xl bg-slate-50 dark:bg-slate-800/70 border border-slate-200/60 dark:border-slate-700/60">
+              <div class="w-8 h-8 rounded-xl bg-indigo-100 dark:bg-indigo-900/40 text-indigo-700 dark:text-indigo-300 flex items-center justify-center shrink-0 mt-0.5">
+                <i class="fa-solid fa-layer-group text-xs"></i>
+              </div>
+              <div>
+                <div class="font-bold text-slate-900 dark:text-white text-xs">3D Flashcards, MCQ Quiz & Progress Tracker</div>
+                <div class="text-[11px] text-slate-600 dark:text-slate-300">Cards flip karke yaad karein, 10-sawalat ka imtihan dein aur dekhein ke aap ne kitne % Quran samajh liya.</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Bottom Action Footer -->
+      <div class="p-4 bg-slate-50 dark:bg-slate-900/90 border-t border-slate-200 dark:border-slate-800 shrink-0">
+        <button
+          onclick="dismissWelcomeModal()"
+          class="w-full py-3.5 rounded-2xl bg-gradient-to-r from-emerald-800 to-emerald-950 hover:from-emerald-700 hover:to-emerald-900 text-white font-extrabold text-sm shadow-lg active:scale-95 transition flex items-center justify-center gap-2"
+        >
+          <span>Seekhna Shuru Karein (Bismillah)</span>
+          <i class="fa-solid fa-arrow-right text-amber-300"></i>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Daily Motivational Reminder Modal -->
+  <div id="reminderModal" class="fixed inset-0 z-50 hidden bg-black/70 backdrop-blur-sm flex items-end sm:items-center justify-center p-0 sm:p-4 transition-opacity duration-300">
+    <div class="bg-white dark:bg-slate-900 w-full max-w-md rounded-t-3xl sm:rounded-3xl p-5 sm:p-6 shadow-2xl border border-slate-200 dark:border-slate-800 max-h-[90vh] overflow-y-auto animate-modal-pop">
+      <div class="flex items-center justify-between mb-4">
+        <div class="flex items-center gap-2.5">
+          <div class="w-10 h-10 rounded-2xl bg-amber-100 dark:bg-amber-900/40 text-amber-600 dark:text-amber-300 flex items-center justify-center">
+            <i class="fa-solid fa-bell text-lg"></i>
+          </div>
+          <div>
+            <h3 class="font-extrabold text-base">Daily Quran Reminder</h3>
+            <p class="text-xs text-slate-500 dark:text-slate-400">Har din naya motivational paigham</p>
+          </div>
+        </div>
+        <button onclick="closeModal('reminderModal')" class="w-8 h-8 rounded-full bg-slate-100 dark:bg-slate-800 flex items-center justify-center text-slate-500">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </div>
+
+      <!-- Today's Solid Motivational Message Preview -->
+      <div id="dailyQuoteCard" class="p-4 rounded-2xl bg-gradient-to-br from-emerald-900 to-emerald-950 text-white mb-4 islamic-pattern border border-emerald-700/50">
+        <!-- Populated dynamically by JS -->
+      </div>
+
+      <!-- Reminder Toggle & Time Picker -->
+      <div class="space-y-3 text-xs">
+        <div class="flex items-center justify-between p-3.5 rounded-2xl bg-slate-50 dark:bg-slate-800/80 border border-slate-200/70 dark:border-slate-700/60">
+          <div>
+            <div class="font-bold text-slate-900 dark:text-white text-sm">Daily Notification On/Off</div>
+            <div class="text-[11px] text-slate-500 dark:text-slate-400">Mobile notification bar mein paigham</div>
+          </div>
+          <button
+            id="reminderToggleBtn"
+            onclick="toggleDailyReminder()"
+            class="px-4 py-2 rounded-xl font-extrabold text-xs transition active:scale-95 bg-emerald-800 text-white"
+          >
+            Enable
+          </button>
+        </div>
+
+        <!-- Add Multiple Reminder Times -->
+        <div class="p-3.5 rounded-2xl bg-slate-50 dark:bg-slate-800/80 border border-slate-200/70 dark:border-slate-700/60">
+          <div class="flex items-center justify-between gap-2 mb-2.5">
+            <div>
+              <div class="font-bold text-slate-900 dark:text-white text-sm">Reminder Times (Add Time)</div>
+              <div class="text-[11px] text-slate-500 dark:text-slate-400">Aik ya zyada auqat shamil karein</div>
+            </div>
+            <div class="flex items-center gap-1.5">
+              <input
+                id="newReminderTimeInput"
+                type="time"
+                value="08:00"
+                class="px-2.5 py-1.5 rounded-xl bg-white dark:bg-slate-900 border border-slate-300 dark:border-slate-700 font-bold text-xs text-emerald-900 dark:text-amber-300 focus:outline-none focus:ring-2 focus:ring-emerald-600"
+              />
+              <button
+                onclick="addReminderTime()"
+                class="px-3 py-1.5 rounded-xl bg-emerald-800 hover:bg-emerald-700 text-white font-bold text-xs active:scale-95 transition flex items-center gap-1"
+              >
+                <i class="fa-solid fa-plus text-[10px]"></i> Add
+              </button>
+            </div>
+          </div>
+          <div id="reminderTimesList" class="flex flex-wrap gap-1.5">
+            <!-- Added time chips rendered dynamically -->
+          </div>
+        </div>
+
+        <!-- Repeat Mode & Random Notification Setting -->
+        <div class="p-3.5 rounded-2xl bg-slate-50 dark:bg-slate-800/80 border border-slate-200/70 dark:border-slate-700/60 space-y-2.5">
+          <div class="flex items-center justify-between gap-2">
+            <div>
+              <div class="font-bold text-slate-900 dark:text-white text-sm">Repeat Schedule</div>
+              <div class="text-[11px] text-slate-500 dark:text-slate-400">Kitni baar notification bheja jaye</div>
+            </div>
+            <select
+              id="reminderRepeatSelect"
+              onchange="updateReminderRepeat(this.value)"
+              class="px-2.5 py-1.5 rounded-xl bg-white dark:bg-slate-900 border border-slate-300 dark:border-slate-700 font-bold text-xs text-emerald-900 dark:text-amber-300 focus:outline-none focus:ring-2 focus:ring-emerald-600"
+            >
+              <option value="daily">Rozana (Daily)</option>
+              <option value="every2h">Har 2 Ghante Baad</option>
+              <option value="every4h">Har 4 Ghante Baad</option>
+              <option value="weekdays">Peer se Jumma (Mon-Fri)</option>
+            </select>
+          </div>
+
+          <div class="pt-2 border-t border-slate-200/70 dark:border-slate-700/60 flex items-center justify-between gap-2">
+            <div>
+              <div class="font-bold text-slate-900 dark:text-white text-xs flex items-center gap-1.5">
+                <i class="fa-solid fa-shuffle text-amber-500"></i> Random Quranic Notifications
+              </div>
+              <div class="text-[11px] text-slate-500 dark:text-slate-400">Din mein random kisi bhi waqt naya Quranic paigham</div>
+            </div>
+            <button
+              id="randomReminderToggleBtn"
+              onclick="toggleRandomReminder()"
+              class="px-3 py-1.5 rounded-xl font-extrabold text-[11px] transition active:scale-95 bg-slate-200 dark:bg-slate-700 text-slate-800 dark:text-white"
+            >
+              Off
+            </button>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-2 gap-2.5 pt-1">
+          <button
+            onclick="sendTestNotification()"
+            class="py-3 px-3 rounded-2xl bg-amber-500 hover:bg-amber-400 text-emerald-950 font-extrabold text-xs shadow-sm active:scale-95 transition flex items-center justify-center gap-1.5"
+          >
+            <i class="fa-solid fa-paper-plane"></i> Test Random Alert
+          </button>
+          <button
+            onclick="cycleNextMotivation()"
+            class="py-3 px-3 rounded-2xl bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-800 dark:text-slate-200 font-bold text-xs active:scale-95 transition flex items-center justify-center gap-1.5"
+          >
+            <i class="fa-solid fa-shuffle"></i> Agla Paigham
+          </button>
+        </div>
+
+        <p class="text-[11px] text-slate-500 dark:text-slate-400 text-center pt-1">
+          Tip: Mobile notification bar mein alerts ke liye browser notification permission <strong>Allow</strong> karein aur app ko <strong>Home Screen</strong> par add karein.
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Application Logic & Curated High-Frequency Quranic Vocabulary Database -->
+  <script>
+    const LESSONS = [
+      { id: 1, title: "Huroof-e-Jarr (Jorne Wale Alfaaz)", subtitle: "Prepositions & Particles (حُرُوف)", quranShare: 28, icon: "fa-link", desc: "Quran ki har line mein sab se zyada aane wale jorne wale chote alfaaz." },
+      { id: 2, title: "Zameer (Ishare Aur Naam Ki Jagah)", subtitle: "Pronouns & Pointers (ضَمَائِر)", quranShare: 14, icon: "fa-hand-point-up", desc: "Woh, Woh Sab, Tum, Hum, Yeh, Aur Kaun jaise ishara karne wale alfaaz." },
+      { id: 3, title: "Allah Ke Naam Aur Sifaat", subtitle: "Allah & Creation (أَسْمَاء وَصِفَات)", quranShare: 10, icon: "fa-sun", desc: "Allah Ta'ala ke Pyare Naam, Sifaat, Aasman, Zameen aur Farishton ka zikr." },
+      { id: 4, title: "Bunyadi Af'aal - Hissa 1", subtitle: "Essential Verbs (أَفْعَال - ۱)", quranShare: 8, icon: "fa-bolt", desc: "Kaam wale bunyadi alfaaz: Kaha, Paida Kiya, Jaana, Bheja, Imaan Laya." },
+      { id: 5, title: "Bunyadi Af'aal - Hissa 2", subtitle: "Daily Verbs (أَفْعَال - ۲)", quranShare: 6, icon: "fa-compass", desc: "Rozmarrah ke af'aal: Hidayat Di, Ibadat Ki, Maaf Kiya, Hukum Diya, Lauta." },
+      { id: 6, title: "Imaan, Ibadat Aur Akhirat", subtitle: "Faith & Hereafter (إِيمَان وَآخِرَة)", quranShare: 5, icon: "fa-mosque", desc: "Namaz, Zakat, Jannat, Jahannam, Qiyamat ka din aur Allah ki Rehmat." },
+      { id: 7, title: "Kainat, Insaan Aur Hikmat", subtitle: "People, Prophets & Wisdom (حِكْمَة)", quranShare: 4, icon: "fa-book-open-reader", desc: "Insaan, Rasool, Nabi, Kitab, Dil, Rooh, Sachai aur Hikmat ke alfaaz." }
+    ];
+
+    const QURAN_WORDS = [
+      // ================= LESSON 1: HUROOF-E-JARR (18 Words) =================
+      { id: 1, lesson: 1, category: "Harf (Jorne Wala)", arabic: "وَ", transliteration: "Wa", urdu: "اور", romanUrdu: "Aur", english: "And", freq: 9800, example: "وَٱللَّهُ غَفُورٌ رَّحِيمٌ — Aur Allah bakhshne wala meherban hai" },
+      { id: 2, lesson: 1, category: "Harf-e-Jarr", arabic: "فِي", transliteration: "Fee", urdu: "میں", romanUrdu: "Mein", english: "In / Into", freq: 1701, example: "فِي سَبِيلِ ٱللَّهِ — Allah ke raste mein" },
+      { id: 3, lesson: 1, category: "Harf-e-Jarr", arabic: "مِنْ", transliteration: "Min", urdu: "سے", romanUrdu: "Se", english: "From / Of", freq: 3226, example: "مِنَ ٱلْجِنَّةِ وَٱلنَّاسِ — Jinnat aur insano mein se" },
+      { id: 4, lesson: 1, category: "Harf-e-Jarr", arabic: "عَلَىٰ", transliteration: "'Ala", urdu: "پر", romanUrdu: "Par", english: "On / Upon", freq: 1445, example: "عَلَىٰ كُلِّ شَيْءٍ قَدِيرٌ — Har cheez par qadir" },
+      { id: 5, lesson: 1, category: "Harf-e-Jarr", arabic: "إِلَىٰ", transliteration: "Ila", urdu: "کی طرف / تک", romanUrdu: "Ki taraf / Tak", english: "To / Towards", freq: 742, example: "إِلَىٰ صِرَٰطٍ مُّسْتَقِيمٍ — Seedhe raste ki taraf" },
+      { id: 6, lesson: 1, category: "Harf-e-Nafi (Inkar)", arabic: "لَا", transliteration: "La", urdu: "نہیں / مت", romanUrdu: "Nahin / Mat", english: "No / Not / Do not", freq: 1720, example: "لَا إِلَٰهَ إِلَّا ٱللَّهُ — Allah ke siwa koi mabood nahin" },
+      { id: 7, lesson: 1, category: "Harf / Ism", arabic: "مَا", transliteration: "Ma", urdu: "جو / نہیں / کیا", romanUrdu: "Jo / Nahin / Kya", english: "What / Not / Which", freq: 2150, example: "مَا فِي ٱلسَّمَـٰوَٰتِ — Jo kuch aasmano mein hai" },
+      { id: 8, lesson: 1, category: "Harf-e-Takeed", arabic: "إِنَّ", transliteration: "Inna", urdu: "بے شک", romanUrdu: "Beshak", english: "Indeed / Verily", freq: 1682, example: "إِنَّ ٱللَّهَ مَعَ ٱلصَّـٰبِرِينَ — Beshak Allah sabr karne walon ke sath hai" },
+      { id: 9, lesson: 1, category: "Harf (Jorne Wala)", arabic: "أَنْ / أَنَّ", transliteration: "An / Anna", urdu: "کہ", romanUrdu: "Keh", english: "That", freq: 1150, example: "أَنَّ ٱللَّهَ عَلِيمٌ — Keh Allah sab jaanne wala hai" },
+      { id: 10, lesson: 1, category: "Harf-e-Jarr", arabic: "عَنْ", transliteration: "'An", urdu: "سے / کے بارے میں", romanUrdu: "Se / Ke bare mein", english: "From / About", freq: 465, example: "رَضِيَ ٱللَّهُ عَنْهُمْ — Allah un se raazi hua" },
+      { id: 11, lesson: 1, category: "Zarf (Sath)", arabic: "مَعَ", transliteration: "Ma'a", urdu: "ساتھ", romanUrdu: "Sath", english: "With", freq: 163, example: "إِنَّ مَعَ ٱلْعُسْرِ يُسْرًا — Beshak mushkil ke sath aasani hai" },
+      { id: 12, lesson: 1, category: "Zarf (Jagah)", arabic: "بَيْنَ", transliteration: "Bayna", urdu: "درمیان", romanUrdu: "Darmiyan", english: "Between / Among", freq: 266, example: "بَيْنَ أَيْدِيهِمْ — Un ke aage (darmiyan)" },
+      { id: 13, lesson: 1, category: "Zarf (Jagah)", arabic: "عِنْدَ", transliteration: "'Inda", urdu: "پاس / نزدیک", romanUrdu: "Paas / Nazdeek", english: "With / Near / At", freq: 201, example: "عِنْدَ رَبِّهِمْ — Apne Rabb ke paas" },
+      { id: 14, lesson: 1, category: "Harf-e-Istisna", arabic: "إِلَّا", transliteration: "Illa", urdu: "مگر / سوائے", romanUrdu: "Magar / Siwaye", english: "Except / Unless", freq: 663, example: "إِلَّا رَحْمَةً لِّلْعَـٰلَمِينَ — Magar tamama jahanon ke liye rehmat" },
+      { id: 15, lesson: 1, category: "Harf (Tarteeb)", arabic: "ثُمَّ", transliteration: "Thumma", urdu: "پھر", romanUrdu: "Phir", english: "Then / Moreover", freq: 338, example: "ثُمَّ إِلَيْهِ تُرْجَعُونَ — Phir usi ki taraf lautaye jaoge" },
+      { id: 16, lesson: 1, category: "Harf (Ikhtiyar)", arabic: "أَوْ", transliteration: "Aw", urdu: "یا", romanUrdu: "Ya", english: "Or", freq: 280, example: "أَوْ أَشَدُّ قَسْوَةً — Ya us se bhi zyada sakht" },
+      { id: 17, lesson: 1, category: "Harf-e-Takeed", arabic: "قَدْ", transliteration: "Qad", urdu: "تحقیق / یقیناً", romanUrdu: "Yaqeenan / Tehqeeq", english: "Certainly / Already", freq: 406, example: "قَدْ أَفْلَحَ ٱلْمُؤْمِنُونَ — Yaqeenan imaan wale kamyab ho gaye" },
+      { id: 18, lesson: 1, category: "Ism (Kul/Sab)", arabic: "كُلّ", transliteration: "Kull", urdu: "ہر / سب", romanUrdu: "Har / Sab", english: "Every / All / Each", freq: 377, example: "كُلُّ نَفْسٍ ذَآئِقَةُ ٱلْمَوْتِ — Har jaan maut ka maza chakhne wali hai" },
+
+      // ================= LESSON 2: ZAMEER (18 Words) =================
+      { id: 19, lesson: 2, category: "Zameer (Wahid)", arabic: "هُوَ", transliteration: "Huwa", urdu: "وہ (ایک مرد)", romanUrdu: "Woh (Single)", english: "He / It", freq: 526, example: "قُلْ هُوَ ٱللَّهُ أَحَدٌ — Kaho woh Allah aik hai" },
+      { id: 20, lesson: 2, category: "Zameer (Jama)", arabic: "هُمْ", transliteration: "Hum", urdu: "وہ سب", romanUrdu: "Woh sab", english: "They / Them", freq: 1120, example: "وَأُو۟لَـٰٓئِكَ هُمُ ٱلْمُفْلِحُونَ — Aur wahi log kamyab hain" },
+      { id: 21, lesson: 2, category: "Zameer (Hazir)", arabic: "أَنْتَ", transliteration: "Anta", urdu: "تو / آپ", romanUrdu: "Tu / Aap", english: "You (singular)", freq: 81, example: "إِنَّكَ أَنتَ ٱلْعَلِيمُ ٱلْحَكِيمُ — Beshak Tu hi jaanne wala hikmat wala hai" },
+      { id: 22, lesson: 2, category: "Zameer (Hazir Jama)", arabic: "أَنْتُمْ", transliteration: "Antum", urdu: "تم سب", romanUrdu: "Tum sab", english: "You all (plural)", freq: 135, example: "وَأَنتُمْ تَعْلَمُونَ — Aur tum jaante ho" },
+      { id: 23, lesson: 2, category: "Zameer (Mutakallim)", arabic: "أَنَا۠", transliteration: "Ana", urdu: "میں", romanUrdu: "Main", english: "I / Me", freq: 68, example: "إِنَّنِىٓ أَنَا ٱللَّهُ — Beshak Main hi Allah hoon" },
+      { id: 24, lesson: 2, category: "Zameer (Mutakallim)", arabic: "نَحْنُ", transliteration: "Nahnu", urdu: "ہم", romanUrdu: "Hum", english: "We / Us", freq: 86, example: "نَحْنُ نَزَّلْنَا ٱلذِّكْرَ — Hum ne hi is Zikr (Quran) ko nazil kiya" },
+      { id: 25, lesson: 2, category: "Zameer (Muannas)", arabic: "هِيَ", transliteration: "Hiya", urdu: "وہ (عورت / چیز)", romanUrdu: "Woh (Feminine)", english: "She / It", freq: 64, example: "سَلَـٰمٌ هِىَ حَتَّىٰ مَطْلَعِ ٱلْفَجْرِ — Woh salamti hai fajr nikalne tak" },
+      { id: 26, lesson: 2, category: "Ism-e-Mausool", arabic: "ٱلَّذِى", transliteration: "Alladhi", urdu: "وہ جو", romanUrdu: "Woh jo", english: "The one who / Which", freq: 304, example: "ٱلَّذِى خَلَقَكَ — Woh jis ne tujhe paida kiya" },
+      { id: 27, lesson: 2, category: "Ism-e-Mausool", arabic: "ٱلَّذِينَ", transliteration: "Alladhina", urdu: "وہ لوگ جو", romanUrdu: "Woh log jo", english: "Those who", freq: 1080, example: "ٱلَّذِينَ ءَامَنُوا۟ — Woh log jo imaan laye" },
+      { id: 28, lesson: 2, category: "Ism-e-Ishara", arabic: "هَـٰذَا", transliteration: "Hadha", urdu: "یہ", romanUrdu: "Yeh", english: "This", freq: 225, example: "هَـٰذَا ٱلْقُرْءَانُ — Yeh Quran" },
+      { id: 29, lesson: 2, category: "Ism-e-Ishara", arabic: "ذَٰلِكَ", transliteration: "Dhalika", urdu: "وہ (دور)", romanUrdu: "Woh (That)", english: "That", freq: 479, example: "ذَٰلِكَ ٱلْكِتَـٰبُ لَا رَيْبَ فِيهِ — Woh kitab jis mein koi shak nahin" },
+      { id: 30, lesson: 2, category: "Ism-e-Ishara", arabic: "أُو۟لَـٰٓئِكَ", transliteration: "Ula'ika", urdu: "وہی لوگ", romanUrdu: "Wahi log", english: "Those", freq: 204, example: "أُو۟لَـٰٓئِكَ عَلَىٰ هُدًى مِّن رَّبِّهِمْ — Wahi log apne Rabb ki hidayat par hain" },
+      { id: 31, lesson: 2, category: "Ism-e-Ishara", arabic: "هَـٰٓؤُلَآءِ", transliteration: "Ha'ula'i", urdu: "یہ سب لوگ", romanUrdu: "Yeh sab log", english: "These", freq: 46, example: "إِنَّ هَـٰٓؤُلَآءِ — Beshak yeh log" },
+      { id: 32, lesson: 2, category: "Sawal / Mausool", arabic: "مَنْ", transliteration: "Man", urdu: "کون / جو کوئی", romanUrdu: "Kaun / Jo koi", english: "Who / Whoever", freq: 823, example: "مَن يَعْمَلْ مِثْقَالَ ذَرَّةٍ — Jo koi zarra barabar neki karega" },
+      { id: 33, lesson: 2, category: "Ism-e-Istifham (Sawal)", arabic: "كَيْفَ", transliteration: "Kayfa", urdu: "کیسے", romanUrdu: "Kaise", english: "How", freq: 83, example: "كَيْفَ تَكْفُرُونَ بِٱللَّهِ — Tum kaise Allah ka inkar karte ho" },
+      { id: 34, lesson: 2, category: "Ism-e-Istifham (Sawal)", arabic: "أَيْنَ", transliteration: "Ayna", urdu: "کہاں", romanUrdu: "Kahan", english: "Where", freq: 30, example: "فَأَيْنَ تَذْهَبُونَ — Phir tum kahan ja rahe ho" },
+      { id: 35, lesson: 2, category: "Ism (Naam)", arabic: "بَعْض", transliteration: "Ba'd", urdu: "بعض / کچھ", romanUrdu: "Baaz / Kuch", english: "Some / Part of", freq: 158, example: "بَعْضُهُمْ أَوْلِيَآءُ بَعْضٍ — Un mein se baaz baaz ke dost hain" },
+      { id: 36, lesson: 2, category: "Ism (Naam)", arabic: "غَيْر", transliteration: "Ghayr", urdu: "علاوہ / غیر", romanUrdu: "Ilawa / Ghair", english: "Other than / Non", freq: 147, example: "غَيْرِ ٱلْمَغْضُوبِ عَلَيْهِمْ — Un ke ilawa jin par ghazab hua" },
+
+      // ================= LESSON 3: ALLAH KE NAAM AUR SIFAAT (18 Words) =================
+      { id: 37, lesson: 3, category: "Ism-e-Zaat", arabic: "ٱللَّه", transliteration: "Allah", urdu: "اللہ", romanUrdu: "Allah", english: "Allah (God)", freq: 2699, example: "بِسْمِ ٱللَّهِ ٱلرَّحْمَـٰنِ ٱلرَّحِيمِ — Allah ke naam se jo nihayat meherban hai" },
+      { id: 38, lesson: 3, category: "Ism (Naam)", arabic: "رَبّ", transliteration: "Rabb", urdu: "رب / پالنے والا", romanUrdu: "Rabb / Palne wala", english: "Lord / Sustainer", freq: 975, example: "ٱلْحَمْدُ لِلَّهِ رَبِّ ٱلْعَـٰلَمِينَ — Tamam tareefein Allah ke liye jo jahanon ka Rabb hai" },
+      { id: 39, lesson: 3, category: "Ism (Naam)", arabic: "إِلَـٰه", transliteration: "Ilah", urdu: "معبود", romanUrdu: "Mabood", english: "Deity / God", freq: 147, example: "وَإِلَـٰهُكُمْ إِلَـٰهٌ وَٰحِدٌ — Aur tumhara mabood aik hi mabood hai" },
+      { id: 40, lesson: 3, category: "Sifat-e-Ilahi", arabic: "رَحْمَـٰن", transliteration: "Rahman", urdu: "بے حد مہربان", romanUrdu: "Behad Meherban", english: "Most Gracious", freq: 57, example: "ٱلرَّحْمَـٰنُ عَلَّمَ ٱلْقُرْءَانَ — Rehman ne hi Quran sikhaya" },
+      { id: 41, lesson: 3, category: "Sifat-e-Ilahi", arabic: "رَحِيم", transliteration: "Raheem", urdu: "نہایت رحم والا", romanUrdu: "Nihayat Reham wala", english: "Most Merciful", freq: 115, example: "إِنَّهُۥ هُوَ ٱلتَّوَّابُ ٱلرَّحِيمُ — Beshak wohi tauba qubool karne wala meherban hai" },
+      { id: 42, lesson: 3, category: "Sifat-e-Ilahi", arabic: "عَلِيم", transliteration: "'Aleem", urdu: "سب کچھ جاننے والا", romanUrdu: "Sab jaanne wala", english: "All-Knowing", freq: 162, example: "وَٱللَّهُ بِكُلِّ شَىْءٍ عَلِيمٌ — Aur Allah har cheez ko khoob jaanne wala hai" },
+      { id: 43, lesson: 3, category: "Sifat-e-Ilahi", arabic: "حَكِيم", transliteration: "Hakeem", urdu: "حکمت والا", romanUrdu: "Hikmat wala", english: "All-Wise", freq: 97, example: "وَٱللَّهُ عَزِيزٌ حَكِيمٌ — Aur Allah ghalib hikmat wala hai" },
+      { id: 44, lesson: 3, category: "Sifat-e-Ilahi", arabic: "عَزِيز", transliteration: "'Azeez", urdu: "زبردست / غالب", romanUrdu: "Zabardast / Ghalib", english: "Almighty / Powerful", freq: 92, example: "هُوَ ٱلْعَزِيزُ ٱلْغَفُورُ — Woh zabardast bakhshne wala hai" },
+      { id: 45, lesson: 3, category: "Sifat-e-Ilahi", arabic: "غَفُور", transliteration: "Ghafoor", urdu: "بہت بخشنے والا", romanUrdu: "Bahut bakhshne wala", english: "Oft-Forgiving", freq: 91, example: "نَبِّئْ عِبَادِىٓ أَنِّىٓ أَنَا ٱلْغَفُورُ — Mere bandon ko bata do ke Main hi bakhshne wala hoon" },
+      { id: 46, lesson: 3, category: "Sifat-e-Ilahi", arabic: "قَدِير", transliteration: "Qadeer", urdu: "قدرت رکھنے والا", romanUrdu: "Qudrat rakhne wala", english: "All-Powerful / Able", freq: 45, example: "إِنَّ ٱللَّهَ عَلَىٰ كُلِّ شَىْءٍ قَدِيرٌ — Beshak Allah har cheez par qadir hai" },
+      { id: 47, lesson: 3, category: "Ism (Kainat)", arabic: "سَمَآء / سَمَـٰوَٰت", transliteration: "Sama' / Samawat", urdu: "آسمان", romanUrdu: "Aasman", english: "Sky / Heavens", freq: 310, example: "رَبُّ ٱلسَّمَـٰوَٰتِ وَٱلْأَرْضِ — Aasmano aur zameen ka Rabb" },
+      { id: 48, lesson: 3, category: "Ism (Kainat)", arabic: "أَرْض", transliteration: "Ard", urdu: "زمین", romanUrdu: "Zameen", english: "Earth / Land", freq: 461, example: "فِى ٱلْأَرْضِ خَلِيفَةً — Zameen mein khalifa" },
+      { id: 49, lesson: 3, category: "Ism (Naam)", arabic: "شَىْء", transliteration: "Shay'", urdu: "چیز", romanUrdu: "Cheez", english: "Thing", freq: 283, example: "خَـٰلِقُ كُلِّ شَىْءٍ — Har cheez ka paida karne wala" },
+      { id: 50, lesson: 3, category: "Ism (Makhlooq)", arabic: "مَلَك / مَلَـٰٓئِكَة", transliteration: "Malak / Mala'ikah", urdu: "فرشتہ / فرشتے", romanUrdu: "Farishta / Farishte", english: "Angel / Angels", freq: 88, example: "وَٱلْمَلَـٰٓئِكَةُ يُسَبِّحُونَ — Aur farishte tasbeeh karte hain" },
+      { id: 51, lesson: 3, category: "Ism (Kainat)", arabic: "نُور", transliteration: "Noor", urdu: "روشنی / نور", romanUrdu: "Roshni / Noor", english: "Light", freq: 49, example: "ٱللَّهُ نُورُ ٱلسَّمَـٰوَٰتِ وَٱلْأَرْضِ — Allah aasmano aur zameen ka noor hai" },
+      { id: 52, lesson: 3, category: "Ism (Kainat)", arabic: "شَمْس", transliteration: "Shams", urdu: "سورج", romanUrdu: "Sooraj", english: "Sun", freq: 33, example: "وَٱلشَّمْسِ وَضُحَىٰهَا — Qasam hai sooraj ki aur us ki dhoop ki" },
+      { id: 53, lesson: 3, category: "Ism (Kainat)", arabic: "قَمَر", transliteration: "Qamar", urdu: "چاند", romanUrdu: "Chaand", english: "Moon", freq: 27, example: "وَٱلْقَمَرِ إِذَا تَلَىٰهَا — Aur chaand ki jab us ke peeche aaye" },
+      { id: 54, lesson: 3, category: "Ism (Kainat)", arabic: "مَآء", transliteration: "Ma'", urdu: "پانی", romanUrdu: "Paani", english: "Water", freq: 63, example: "وَجَعَلْنَا مِنَ ٱلْمَآءِ كُلَّ شَىْءٍ حَىٍّ — Aur hum ne paani se har zinda cheez banayi" },
+
+      // ================= LESSON 4: BUNYADI AF'AAL HISSA 1 (18 Words) =================
+      { id: 55, lesson: 4, category: "Fe'l (Kaam)", arabic: "قَالَ", transliteration: "Qala", urdu: "اس نے کہا", romanUrdu: "Us ne kaha", english: "He said", freq: 1722, example: "قَالَ رَبِّ ٱشْرَحْ لِى صَدْرِى — Kaha ae mere Rabb mera seena khol de" },
+      { id: 56, lesson: 4, category: "Fe'l (Kaam)", arabic: "كَانَ", transliteration: "Kana", urdu: "تھا / ہے", romanUrdu: "Tha / Hai", english: "He was / Is", freq: 1358, example: "وَكَانَ ٱللَّهُ غَفُورًا رَّحِيمًا — Aur Allah bakhshne wala meherban hai" },
+      { id: 57, lesson: 4, category: "Fe'l (Kaam)", arabic: "ءَامَنَ", transliteration: "Amana", urdu: "ایمان لایا", romanUrdu: "Imaan laya", english: "He believed", freq: 537, example: "ءَامَنَ ٱلرَّسُولُ بِمَآ أُنزِلَ إِلَيْهِ — Rasool imaan laye us par jo un par nazil hua" },
+      { id: 58, lesson: 4, category: "Fe'l (Kaam)", arabic: "عَلِمَ", transliteration: "'Alima", urdu: "اس نے جانا", romanUrdu: "Us ne jaana", english: "He knew", freq: 382, example: "عَلِمَ ٱللَّهُ أَنَّكُمْ — Allah ne jaan liya ke tum" },
+      { id: 59, lesson: 4, category: "Fe'l (Kaam)", arabic: "جَعَلَ", transliteration: "Ja'ala", urdu: "اس نے بنایا", romanUrdu: "Us ne banaya", english: "He made / appointed", freq: 346, example: "جَعَلَ لَكُمُ ٱلْأَرْضَ فِرَٰشًا — Tumhare liye zameen ko bichona banaya" },
+      { id: 60, lesson: 4, category: "Fe'l (Kaam)", arabic: "كَفَرَ", transliteration: "Kafara", urdu: "اس نے انکار کیا", romanUrdu: "Us ne inkar kiya", english: "He disbelieved", freq: 289, example: "إِنَّ ٱلَّذِينَ كَفَرُوا۟ — Beshak jin logon ne kufr (inkar) kiya" },
+      { id: 61, lesson: 4, category: "Fe'l (Kaam)", arabic: "جَآءَ", transliteration: "Ja'a", urdu: "وہ آیا", romanUrdu: "Woh aaya", english: "He came", freq: 278, example: "إِذَا جَآءَ نَصْرُ ٱللَّهِ — Jab Allah ki madad aa jaye" },
+      { id: 62, lesson: 4, category: "Fe'l (Kaam)", arabic: "عَمِلَ", transliteration: "'Amila", urdu: "اس نے عمل کیا", romanUrdu: "Us ne amal kiya", english: "He worked / did", freq: 276, example: "وَعَمِلُوا۟ ٱلصَّـٰلِحَـٰتِ — Aur unhon ne nek amal kiye" },
+      { id: 63, lesson: 4, category: "Fe'l (Kaam)", arabic: "ءَاتَىٰ", transliteration: "Ata", urdu: "اس نے دیا", romanUrdu: "Us ne diya", english: "He gave", freq: 271, example: "وَءَاتُوا۟ ٱلزَّكَوٰةَ — Aur zakat ada karo" },
+      { id: 64, lesson: 4, category: "Fe'l (Kaam)", arabic: "رَأَىٰ", transliteration: "Ra'a", urdu: "اس نے دیکھا", romanUrdu: "Us ne dekha", english: "He saw", freq: 271, example: "أَلَمْ تَرَ كَيْفَ فَعَلَ رَبُّكَ — Kya aap ne nahin dekha ke aap ke Rabb ne kya kiya" },
+      { id: 65, lesson: 4, category: "Fe'l (Kaam)", arabic: "شَآءَ", transliteration: "Sha'a", urdu: "اس نے چاہا", romanUrdu: "Us ne chaha", english: "He willed / wished", freq: 236, example: "إِن شَآءَ ٱللَّهُ — Agar Allah ne chaha" },
+      { id: 66, lesson: 4, category: "Fe'l (Kaam)", arabic: "خَلَقَ", transliteration: "Khalaqa", urdu: "اس نے پیدا کیا", romanUrdu: "Us ne paida kiya", english: "He created", freq: 248, example: "خَلَقَ ٱلْإِنسَـٰنَ مِنْ عَلَقٍ — Insaan ko jame hue khoon se paida kiya" },
+      { id: 67, lesson: 4, category: "Fe'l (Kaam)", arabic: "أَنزَلَ", transliteration: "Anzala", urdu: "اس نے نازل کیا", romanUrdu: "Us ne nazil kiya", english: "He sent down / revealed", freq: 183, example: "إِنَّآ أَنزَلْنَـٰهُ فِى لَيْلَةِ ٱلْقَدْرِ — Beshak hum ne ise Shab-e-Qadr mein nazil kiya" },
+      { id: 68, lesson: 4, category: "Fe'l (Kaam)", arabic: "دَعَا", transliteration: "Da'a", urdu: "اس نے پکارا / دعا کی", romanUrdu: "Us ne pukara / dua ki", english: "He called / prayed", freq: 170, example: "ٱدْعُونِىٓ أَسْتَجِبْ لَكُمْ — Mujhe pukaro main tumhari dua qubool karunga" },
+      { id: 69, lesson: 4, category: "Fe'l (Kaam)", arabic: "ٱتَّقَىٰ", transliteration: "Ittaqa", urdu: "اس نے تقویٰ اختیار کیا", romanUrdu: "Us ne taqwa ikhtiyar kiya", english: "He feared Allah / was pious", freq: 166, example: "يَـٰٓأَيُّهَا ٱلَّذِينَ ءَامَنُوا۟ ٱتَّقُوا۟ ٱللَّهَ — Ae imaan walo Allah se daro" },
+      { id: 70, lesson: 4, category: "Fe'l (Kaam)", arabic: "هَدَىٰ", transliteration: "Hada", urdu: "اس نے ہدایت دی", romanUrdu: "Us ne hidayat di", english: "He guided", freq: 144, example: "ٱهْدِنَا ٱلصِّرَٰطَ ٱلْمُسْتَقِيمَ — Humein seedha rasta dikha" },
+      { id: 71, lesson: 4, category: "Fe'l (Kaam)", arabic: "أَرَادَ", transliteration: "Arada", urdu: "اس نے ارادہ کیا", romanUrdu: "Us ne irada kiya", english: "He intended / wanted", freq: 139, example: "يُرِيدُ ٱللَّهُ بِكُمُ ٱلْيُسْرَ — Allah tumhare sath aasani chahta hai" },
+      { id: 72, lesson: 4, category: "Fe'l (Kaam)", arabic: "أَرْسَلَ", transliteration: "Arsala", urdu: "اس نے بھیجا", romanUrdu: "Us ne bheja", english: "He sent", freq: 130, example: "وَمَآ أَرْسَلْنَـٰكَ إِلَّا رَحْمَةً — Aur hum ne aap ko rehmat bana kar hi bheja" },
+
+      // ================= LESSON 5: BUNYADI AF'AAL HISSA 2 (18 Words) =================
+      { id: 73, lesson: 5, category: "Fe'l (Kaam)", arabic: "أَخَذَ", transliteration: "Akhadha", urdu: "اس نے پکڑا / لیا", romanUrdu: "Us ne pakda / liya", english: "He took / seized", freq: 127, example: "خُذُوا۟ مَآ ءَاتَيْنَـٰكُم بِقُوَّةٍ — Jo hum ne tumhein diya hai use mazbooti se thamo" },
+      { id: 74, lesson: 5, category: "Fe'l (Kaam)", arabic: "عَبَدَ", transliteration: "'Abada", urdu: "اس نے عبادت کی", romanUrdu: "Us ne ibadat ki", english: "He worshipped", freq: 122, example: "إِيَّاكَ نَعْبُدُ وَإِيَّاكَ نَسْتَعِينُ — Hum teri hi ibadat karte hain aur tujhi se madad mangte hain" },
+      { id: 75, lesson: 5, category: "Fe'l (Kaam)", arabic: "ظَلَمَ", transliteration: "Zalama", urdu: "اس نے ظلم کیا", romanUrdu: "Us ne zulm kiya", english: "He wronged / oppressed", freq: 110, example: "رَبَّنَا ظَلَمْنَآ أَنفُسَنَا — Ae hamare Rabb hum ne apni jaanon par zulm kiya" },
+      { id: 76, lesson: 5, category: "Fe'l (Kaam)", arabic: "سَأَلَ", transliteration: "Sa'ala", urdu: "اس نے پوچھا / مانگا", romanUrdu: "Us ne poocha / manga", english: "He asked", freq: 106, example: "وَإِذَا سَأَلَكَ عِبَادِى عَنِّى — Aur jab mere bande aap se mere bare mein poochein" },
+      { id: 77, lesson: 5, category: "Fe'l (Kaam)", arabic: "وَجَدَ", transliteration: "Wajada", urdu: "اس نے پایا", romanUrdu: "Us ne paya", english: "He found", freq: 107, example: "وَوَجَدَكَ ضَآلًّا فَهَدَىٰ — Aur aap ko rasta talash karte paya to hidayat di" },
+      { id: 78, lesson: 5, category: "Fe'l (Kaam)", arabic: "أَخْرَجَ", transliteration: "Akhraja", urdu: "اس نے نکالا", romanUrdu: "Us ne nikala", english: "He brought out / expelled", freq: 99, example: "يُخْرِجُهُم مِّنَ ٱلظُّلُمَـٰتِ إِلَى ٱلنُّورِ — Unhein andheron se nikal kar roshni ki taraf lata hai" },
+      { id: 79, lesson: 5, category: "Fe'l (Kaam)", arabic: "أَكَلَ", transliteration: "Akala", urdu: "اس نے کھایا", romanUrdu: "Us ne khaya", english: "He ate / consumed", freq: 93, example: "كُلُوا۟ مِن طَيِّبَـٰتِ مَا رَزَقْنَـٰكُمْ — Jo pakeeza rizq hum ne diya hai us mein se khao" },
+      { id: 80, lesson: 5, category: "Fe'l (Kaam)", arabic: "غَفَرَ", transliteration: "Ghafara", urdu: "اس نے معاف کیا", romanUrdu: "Us ne maaf kiya", english: "He forgave", freq: 95, example: "وَٱغْفِرْ لَنَا وَٱرْحَمْنَآ — Aur humein bakhsh de aur hum par reham farma" },
+      { id: 81, lesson: 5, category: "Fe'l (Kaam)", arabic: "ذَكَرَ", transliteration: "Dhakara", urdu: "اس نے یاد کیا", romanUrdu: "Us ne yaad kiya", english: "He remembered / mentioned", freq: 84, example: "فَٱذْكُرُونِىٓ أَذْكُرْكُمْ — Pas tum mujhe yaad karo main tumhein yaad karunga" },
+      { id: 82, lesson: 5, category: "Fe'l (Kaam)", arabic: "سَمِعَ", transliteration: "Sami'a", urdu: "اس نے سنا", romanUrdu: "Us ne suna", english: "He heard", freq: 78, example: "سَمِعْنَا وَأَطَعْنَا — Hum ne suna aur itaat ki" },
+      { id: 83, lesson: 5, category: "Fe'l (Kaam)", arabic: "أَمَرَ", transliteration: "Amara", urdu: "اس نے حکم دیا", romanUrdu: "Us ne hukum diya", english: "He commanded", freq: 77, example: "إِنَّ ٱللَّهَ يَأْمُرُ بِٱلْعَدْلِ — Beshak Allah insaf ka hukum deta hai" },
+      { id: 84, lesson: 5, category: "Fe'l (Kaam)", arabic: "رَجَعَ", transliteration: "Raja'a", urdu: "وہ لوٹا", romanUrdu: "Woh lauta", english: "He returned", freq: 79, example: "إِنَّا لِلَّهِ وَإِنَّآ إِلَيْهِ رَٰجِعُونَ — Hum Allah hi ke hain aur usi ki taraf lautne wale hain" },
+      { id: 85, lesson: 5, category: "Fe'l (Kaam)", arabic: "كَتَبَ", transliteration: "Kataba", urdu: "اس نے لکھا / فرض کیا", romanUrdu: "Us ne likha / farz kiya", english: "He wrote / prescribed", freq: 56, example: "كُتِبَ عَلَيْكُمُ ٱلصِّيَامُ — Tum par roze farz kiye gaye hain" },
+      { id: 86, lesson: 5, category: "Fe'l (Kaam)", arabic: "نَصَرَ", transliteration: "Nasara", urdu: "اس نے مدد کی", romanUrdu: "Us ne madad ki", english: "He helped", freq: 65, example: "إِن تَنصُرُوا۟ ٱللَّهَ يَنصُرْكُمْ — Agar tum Allah (ke deen) ki madad karoge to woh tumhari madad karega" },
+      { id: 87, lesson: 5, category: "Fe'l (Kaam)", arabic: "صَبَرَ", transliteration: "Sabara", urdu: "اس نے صبر کیا", romanUrdu: "Us ne sabr kiya", english: "He was patient", freq: 58, example: "وَٱصْبِرْ فَإِنَّ ٱللَّهَ لَا يُضِيعُ أَجْرَ ٱلْمُحْسِنِينَ — Aur sabr karo beshak Allah neki karne walon ka ajar zaya nahin karta" },
+      { id: 88, lesson: 5, category: "Fe'l (Kaam)", arabic: "شَكَرَ", transliteration: "Shakara", urdu: "اس نے شکر کیا", romanUrdu: "Us ne shukar kiya", english: "He was grateful / thanked", freq: 46, example: "لَئِن شَكَرْتُمْ لَأَزِيدَنَّكُمْ — Agar tum shukar karoge to main tumhein zaroor zyada dunga" },
+      { id: 89, lesson: 5, category: "Fe'l (Kaam)", arabic: "تَابَ", transliteration: "Taba", urdu: "اس نے توبہ کی", romanUrdu: "Us ne tauba ki", english: "He repented / turned back", freq: 72, example: "وَتُوبُوٓا۟ إِلَى ٱللَّهِ جَمِيعًا — Aur sab mil kar Allah ki taraf tauba karo" },
+      { id: 90, lesson: 5, category: "Fe'l (Kaam)", arabic: "أَنفَقَ", transliteration: "Anfaqa", urdu: "اس نے خرچ کیا", romanUrdu: "Us ne kharch kiya", english: "He spent (in charity)", freq: 68, example: "وَمِمَّا رَزَقْنَـٰهُمْ يُنفِقُونَ — Aur jo rizq hum ne unhein diya us mein se kharch karte hain" },
+
+      // ================= LESSON 6: IMAAN, IBADAT AUR AKHIRAT (18 Words) =================
+      { id: 91, lesson: 6, category: "Ism (Ibadat)", arabic: "صَلَوٰة", transliteration: "Salah", urdu: "نماز", romanUrdu: "Namaz", english: "Prayer", freq: 83, example: "وَأَقِيمُوا۟ ٱلصَّلَوٰةَ — Aur namaz qaim karo" },
+      { id: 92, lesson: 6, category: "Ism (Ibadat)", arabic: "زَكَوٰة", transliteration: "Zakah", urdu: "زکوٰۃ", romanUrdu: "Zakat", english: "Purifying Charity", freq: 32, example: "وَءَاتُوا۟ ٱلزَّكَوٰةَ — Aur zakat ada karo" },
+      { id: 93, lesson: 6, category: "Ism (Deen)", arabic: "دِين", transliteration: "Deen", urdu: "دین / جزا", romanUrdu: "Deen / Jaza", english: "Religion / Way of Life / Judgment", freq: 92, example: "مَـٰلِكِ يَوْمِ ٱلدِّينِ — Jaza ke din ka malik" },
+      { id: 94, lesson: 6, category: "Ism (Imaan)", arabic: "إِيمَـٰن", transliteration: "Iman", urdu: "ایمان", romanUrdu: "Imaan", english: "Faith / Belief", freq: 45, example: "زَادَتْهُمْ إِيمَـٰنًا — Un ke imaan ko barha diya" },
+      { id: 95, lesson: 6, category: "Ism (Waqt)", arabic: "يَوْم", transliteration: "Yawm", urdu: "دن", romanUrdu: "Din", english: "Day", freq: 405, example: "يَوْمَ ٱلْقِيَـٰمَةِ — Qiyamat ke din" },
+      { id: 96, lesson: 6, category: "Ism (Akhirat)", arabic: "ءَاخِرَة", transliteration: "Akhirah", urdu: "آخرت", romanUrdu: "Akhirat", english: "Hereafter", freq: 115, example: "وَلَلْـَٔاخِرَةُ خَيْرٌ لَّكَ مِنَ ٱلْأُولَىٰ — Aur akhirat aap ke liye dunya se behtar hai" },
+      { id: 97, lesson: 6, category: "Ism (Dunya)", arabic: "دُنْيَا", transliteration: "Dunya", urdu: "دنیا", romanUrdu: "Dunya", english: "Worldly Life", freq: 115, example: "ٱلْحَيَوٰةُ ٱلدُّنْيَا — Dunya ki zindagi" },
+      { id: 98, lesson: 6, category: "Ism (Akhirat)", arabic: "جَنَّة", transliteration: "Jannah", urdu: "جنت / باغ", romanUrdu: "Jannat / Bagh", english: "Paradise / Garden", freq: 147, example: "جَنَّـٰتٍ تَجْرِى مِن تَحْتِهَا ٱلْأَنْهَـٰرُ — Aisi jannatein jin ke neeche nehrein behti hain" },
+      { id: 99, lesson: 6, category: "Ism (Akhirat)", arabic: "نَار", transliteration: "Nar", urdu: "آگ / جہنم", romanUrdu: "Aag / Jahannam", english: "Fire / Hellfire", freq: 145, example: "وَقِنَا عَذَابَ ٱلنَّارِ — Aur humein aag ke azaab se bacha" },
+      { id: 100, lesson: 6, category: "Ism (Akhirat)", arabic: "عَذَاب", transliteration: "'Adhab", urdu: "عذاب / سزا", romanUrdu: "Azaab / Saza", english: "Punishment / Torment", freq: 373, example: "عَذَابٌ أَلِيمٌ — Dardnak azaab" },
+      { id: 101, lesson: 6, category: "Ism (Sifat)", arabic: "رَحْمَة", transliteration: "Rahmah", urdu: "رحمت", romanUrdu: "Rehmat", english: "Mercy", freq: 114, example: "وَرَحْمَتِى وَسِعَتْ كُلَّ شَىْءٍ — Aur meri rehmat har cheez par chhayi hui hai" },
+      { id: 102, lesson: 6, category: "Ism (Hidayat)", arabic: "هُدًى", transliteration: "Huda", urdu: "ہدایت", romanUrdu: "Hidayat", english: "Guidance", freq: 85, example: "هُدًى لِّلْمُتَّقِينَ — Muttaqiyon ke liye hidayat" },
+      { id: 103, lesson: 6, category: "Ism (Sifat)", arabic: "خَيْر", transliteration: "Khayr", urdu: "بھلائی / بہتر", romanUrdu: "Bhalai / Behtar", english: "Good / Better", freq: 176, example: "رَبَّنَآ ءَاتِنَا فِى ٱلدُّنْيَا حَسَنَةً — Ae hamare Rabb humein dunya mein bhalai de" },
+      { id: 104, lesson: 6, category: "Ism (Sifat)", arabic: "شَرّ", transliteration: "Sharr", urdu: "برائی / شر", romanUrdu: "Burai / Shar", english: "Evil / Worse", freq: 31, example: "مِن شَرِّ مَا خَلَقَ — Us ki makhlooq ke shar se" },
+      { id: 105, lesson: 6, category: "Ism (Badla)", arabic: "أَجْر", transliteration: "Ajr", urdu: "اجر / بدلہ", romanUrdu: "Ajar / Badla", english: "Reward", freq: 105, example: "لَهُمْ أَجْرٌ غَيْرُ مَمْنُونٍ — Un ke liye kabhi na khatam hone wala ajar hai" },
+      { id: 106, lesson: 6, category: "Ism (Rasta)", arabic: "سَبِيل", transliteration: "Sabeel", urdu: "راستہ", romanUrdu: "Rasta", english: "Way / Path", freq: 176, example: "فِى سَبِيلِ ٱللَّهِ — Allah ke raste mein" },
+      { id: 107, lesson: 6, category: "Ism (Rasta)", arabic: "صِرَٰط", transliteration: "Sirat", urdu: "سیدھا راستہ", romanUrdu: "Seedha rasta", english: "Straight Path", freq: 45, example: "ٱلصِّرَٰطَ ٱلْمُسْتَقِيمَ — Seedha rasta" },
+      { id: 108, lesson: 6, category: "Ism (Salamti)", arabic: "سَلَـٰم", transliteration: "Salam", urdu: "سلامتی", romanUrdu: "Salamti", english: "Peace", freq: 42, example: "سَلَـٰمٌ قَوْلًا مِّن رَّبٍّ رَّحِيمٍ — Meherban Rabb ki taraf se salam kaha jayega" },
+
+      // ================= LESSON 7: KAINAT, INSAAN AUR HIKMAT (18 Words) =================
+      { id: 109, lesson: 7, category: "Ism (Insaan)", arabic: "نَاس", transliteration: "Nas", urdu: "لوگ / انسان", romanUrdu: "Log / Insaan", english: "Mankind / People", freq: 241, example: "يَـٰٓأَيُّهَا ٱلنَّاسُ ٱعْبُدُوا۟ رَبَّكُمُ — Ae logo apne Rabb ki ibadat karo" },
+      { id: 110, lesson: 7, category: "Ism (Insaan)", arabic: "قَوْم", transliteration: "Qawm", urdu: "قوم", romanUrdu: "Qaum", english: "Nation / People", freq: 383, example: "لِّقَوْمٍ يَعْقِلُونَ — Un logon ke liye jo aqal rakhte hain" },
+      { id: 111, lesson: 7, category: "Ism (Anbiya)", arabic: "رَسُول", transliteration: "Rasool", urdu: "رسول / پیغمبر", romanUrdu: "Rasool / Paighambar", english: "Messenger", freq: 332, example: "مُّحَمَّدٌ رَّسُولُ ٱللَّهِ — Muhammad (SAW) Allah ke rasool hain" },
+      { id: 112, lesson: 7, category: "Ism (Anbiya)", arabic: "نَبِىّ", transliteration: "Nabiyy", urdu: "نبی", romanUrdu: "Nabi", english: "Prophet", freq: 75, example: "يَـٰٓأَيُّهَا ٱلنَّبِىُّ — Ae Nabi (SAW)" },
+      { id: 113, lesson: 7, category: "Ism (Insaan)", arabic: "عَبْد / عِبَاد", transliteration: "'Abd / 'Ibad", urdu: "بندہ / بندے", romanUrdu: "Banda / Bande", english: "Servant / Worshipper", freq: 152, example: "سُبْحَـٰنَ ٱلَّذِىٓ أَسْرَىٰ بِعَبْدِهِۦ — Paak hai woh zaat jo apne bande ko le gayi" },
+      { id: 114, lesson: 7, category: "Ism (Sifat)", arabic: "مُؤْمِن / مُؤْمِنُون", transliteration: "Mu'min / Mu'minoon", urdu: "مومن / ایمان والے", romanUrdu: "Momin / Imaan wale", english: "Believer / Believers", freq: 202, example: "إِنَّمَا ٱلْمُؤْمِنُونَ إِخْوَةٌ — Beshak momin aapas mein bhai bhai hain" },
+      { id: 115, lesson: 7, category: "Ism (Sifat)", arabic: "كَـٰفِر / كَـٰفِرُون", transliteration: "Kafir / Kafiroon", urdu: "منکر / کافر", romanUrdu: "Munkir / Kafir", english: "Disbeliever", freq: 134, example: "قُلْ يَـٰٓأَيُّهَا ٱلْكَـٰفِرُونَ — Kaho ae kafiro" },
+      { id: 116, lesson: 7, category: "Ism (Sifat)", arabic: "ظَـٰلِم / ظَـٰلِمُون", transliteration: "Zalim / Zalimoon", urdu: "ظالم", romanUrdu: "Zalim", english: "Wrongdoer / Oppressor", freq: 129, example: "وَٱللَّهُ لَا يَهْدِى ٱلْقَوْمَ ٱلظَّـٰلِمِينَ — Aur Allah zalim qaum ko hidayat nahin deta" },
+      { id: 117, lesson: 7, category: "Ism (Jaan)", arabic: "نَفْس / أَنفُس", transliteration: "Nafs / Anfus", urdu: "جان / نفس", romanUrdu: "Jaan / Nafs", english: "Soul / Self", freq: 295, example: "لَا يُكَلِّفُ ٱللَّهُ نَفْسًا إِلَّا وُسْعَهَا — Allah kisi jaan par us ki taqat se zyada bojh nahin dalta" },
+      { id: 118, lesson: 7, category: "Ism (Jism)", arabic: "قَلْب / قُلُوب", transliteration: "Qalb / Quloob", urdu: "دل", romanUrdu: "Dil", english: "Heart", freq: 132, example: "أَلَا بِذِكْرِ ٱللَّهِ تَطْمَئِنُّ ٱلْقُلُوبُ — Sun lo Allah ke zikr se hi dilon ko itminan milta hai" },
+      { id: 119, lesson: 7, category: "Ism (Kitab)", arabic: "كِتَـٰب", transliteration: "Kitab", urdu: "کتاب", romanUrdu: "Kitab", english: "Book / Scripture", freq: 260, example: "ذَٰلِكَ ٱلْكِتَـٰبُ — Yeh (Quran) woh kitab hai" },
+      { id: 120, lesson: 7, category: "Ism (Nishani)", arabic: "ءَايَة / ءَايَـٰت", transliteration: "Ayah / Ayat", urdu: "نشانی / آیت", romanUrdu: "Nishani / Ayat", english: "Sign / Verse", freq: 382, example: "تِلْكَ ءَايَـٰتُ ٱلْكِتَـٰبِ ٱلْحَكِيمِ — Yeh hikmat wali kitab ki aayatein hain" },
+      { id: 121, lesson: 7, category: "Ism (Sachai)", arabic: "حَقّ", transliteration: "Haqq", urdu: "سچ / حق", romanUrdu: "Sach / Haq", english: "Truth / Right", freq: 247, example: "وَقُلْ جَآءَ ٱلْحَقُّ وَزَهَقَ ٱلْبَـٰطِلُ — Aur kaho haq aa gaya aur batil mit gaya" },
+      { id: 122, lesson: 7, category: "Ism (Hikmat)", arabic: "عِلْم", transliteration: "'Ilm", urdu: "علم", romanUrdu: "Ilm", english: "Knowledge", freq: 105, example: "وَقُل رَّبِّ زِدْنِى عِلْمًا — Aur dua karo ae mere Rabb mere ilm mein izafa farma" },
+      { id: 123, lesson: 7, category: "Ism (Hikmat)", arabic: "حِكْمَة", transliteration: "Hikmah", urdu: "حکمت / دانائی", romanUrdu: "Hikmat / Danai", english: "Wisdom", freq: 20, example: "وَيُعَلِّمُهُمُ ٱلْكِتَـٰبَ وَٱلْحِكْمَةَ — Aur unhein kitab aur hikmat sikhate hain" },
+      { id: 124, lesson: 7, category: "Ism (Hukum)", arabic: "أَمْر", transliteration: "Amr", urdu: "حکم / معاملہ", romanUrdu: "Hukum / Muamla", english: "Command / Matter", freq: 166, example: "إِلَى ٱللَّهِ تُرْجَعُ ٱلْأُمُورُ — Tamam muamlaat Allah hi ki taraf lautaye jate hain" },
+      { id: 125, lesson: 7, category: "Ism (Dushman)", arabic: "شَيْطَـٰن", transliteration: "Shaytan", urdu: "شیطان", romanUrdu: "Shaitan", english: "Satan / Devil", freq: 88, example: "إِنَّ ٱلشَّيْطَـٰنَ لِلْإِنسَـٰنِ عَدُوٌّ مُّبِينٌ — Beshak shaitan insaan ka khula dushman hai" },
+      { id: 126, lesson: 7, category: "Ism (Tareef)", arabic: "حَمْد", transliteration: "Hamd", urdu: "تعریف / شکر", romanUrdu: "Tareef / Shukar", english: "Praise / Gratitude", freq: 43, example: "ٱلْحَمْدُ لِلَّهِ رَبِّ ٱلْعَـٰلَمِينَ — Tamam tareefein Allah ke liye hain" }
+    ];
+
+    const AMBIYA_STORIES = [
+      {
+        id: 'adam',
+        name: 'Hazrat Adam (AS)',
+        arabicName: 'آدَمُ عَلَيْهِ ٱلسَّلَامُ',
+        title: 'Ghalti Ka Aitraf Aur Sachi Tauba',
+        surahRef: 'Surah Al-Baqarah (2:30-37) • Surah Al-A’raf (7:23)',
+        themeTag: 'Tauba & Nadamat',
+        icon: 'fa-seedling',
+        qissa: 'Allah Ta’ala ne Hazrat Adam (AS) ko pehla insaan aur zameen par apna khalifa banaya. Shaitan ke behkawe mein aa kar un se mana kiye gaye darakht ka phal khane ki bhool ho gayi. Magar Shaitan ki tarah zid karne ke bajaye unhon ne foran apni ghalti maani aur Allah ke huzoor ro kar maafi mangi.',
+        implementation: [
+          'Ghalti hone par dusron par ilzam lagane ya bahane banane ke bajaye foran apni ghalti tasleem karein.',
+          'Mayus hone ke bajaye Allah se sachi tauba karein — Allah ki rehmat har gunah se bari hai.',
+          'Shaitan ke hasad aur takabbur se bachein, kyunke takabbur hi Iblees ki tabahi bana.'
+        ],
+        duaArabic: 'رَبَّنَا ظَلَمْنَآ أَنفُسَنَا وَإِن لَّمْ تَغْفِرْ لَنَا وَتَرْحَمْنَا لَنَكُونَنَّ مِنَ ٱلْخَـٰسِرِينَ',
+        duaTranslation: 'Ae hamare Rabb! Hum ne apni jaanon par zulm kiya, aur agar Tu ne humein maaf na kiya aur hum par reham na farmaya to hum zaroor nuqsan uthane walon mein ho jayenge.',
+        keyWords: ['تَابَ (Tauba Ki)', 'غَفَرَ (Maaf Kiya)', 'ظَلَمَ (Zulm Kiya)', 'نَفْس (Jaan)']
+      },
+      {
+        id: 'nuh',
+        name: 'Hazrat Nuh (AS)',
+        arabicName: 'نُوحٌ عَلَيْهِ ٱلسَّلَامُ',
+        title: '950 Saal Ki Mehnat Aur Sabr-o-Istiqamat',
+        surahRef: 'Surah Nuh (71:1-28) • Surah Hud (11:25-48)',
+        themeTag: 'Sabr & Dawat',
+        icon: 'fa-ship',
+        qissa: 'Hazrat Nuh (AS) ne 950 saal tak din-raat apni qaum ko aik Allah ki taraf bulaya. Log un ka mazaaq urate, kaanon mein ungliyan daal lete, magar aap ne himmat nahi haari. Phir Allah ke hukum se unhon ne kashti banayi aur toofan mein sirf imaan wale bachaye gaye.',
+        implementation: [
+          'Kisi bhi nek kaam ya deen ki tableegh mein log mazaaq urayein to dil chhota na karein.',
+          'Nateeja (result) Allah ke hath mein hai, hamara kaam sirf mukhlis ho kar mehnat aur koshish karte rehna hai.',
+          'Bure mahol aur ghalat doston ke dabao (peer pressure) mein aa kar haq ka rasta kabhi na chorein.'
+        ],
+        duaArabic: 'رَّبِّ ٱغْفِرْ لِى وَلِوَٰلِدَىَّ وَلِمَن دَخَلَ بَيْتِىَ مُؤْمِنًا',
+        duaTranslation: 'Ae mere Rabb! Mujhe bakhsh de, mere walidain ko, aur har us shakhs ko jo mere ghar mein imaan ki halat mein dakhil ho.',
+        keyWords: ['قَوْم (Qaum)', 'صَبَرَ (Sabr Kiya)', 'مَآء (Paani)', 'مُؤْمِن (Imaan Wala)']
+      },
+      {
+        id: 'ibrahim',
+        name: 'Hazrat Ibrahim (AS)',
+        arabicName: 'إِبْرَاهِيمُ عَلَيْهِ ٱلسَّلَامُ',
+        title: 'Kamil Tawakkul Aur Har Qurbani Ke Liye Tayyari',
+        surahRef: 'Surah Al-Anbiya (21:51-73) • Surah As-Saffat (37:102)',
+        themeTag: 'Tawakkul & Qurbani',
+        icon: 'fa-fire-flame-curved',
+        qissa: 'Hazrat Ibrahim (AS) ne akele hi poori qaum aur Namrood ke but-parasti ke nizam ko challenge kiya. Jab unhein dehakti hui aag mein phenka gaya to unhon ne sirf Allah par bharosa rakha, aur Allah ne aag ko un ke liye thanda aur salamti wala bana diya. Phir budhape mein mile bete Ismail (AS) ki qurbani ke hukum par bhi foran sar jhuka diya.',
+        implementation: [
+          'Zindagi ki bari se bari mushkil (aag jaise halat) mein sirf Allah par bharosa rakhein, wahi raste nikalta hai.',
+          'Apne walidain aur bachon ke sath narmi aur hikmat se baat karein (jaise Ibrahim AS ne apne walid se ki).',
+          'Allah ke hukum ke aage apni pasand, maal aur khwahishat ko qurban karne ka jazba paida karein.'
+        ],
+        duaArabic: 'رَبَّنَا تَقَبَّلْ مِنَّآ ۖ إِنَّكَ أَنتَ ٱلسَّمِيعُ ٱلْعَلِيمُ',
+        duaTranslation: 'Ae hamare Rabb! Hum se (yeh khidmat) qubool farma le, beshak Tu hi sab kuch sunne wala aur jaanne wala hai.',
+        keyWords: ['نَار (Aag)', 'سَلَـٰم (Salamti)', 'رَبّ (Rabb)', 'سَمِيع (Sunne Wala)']
+      },
+      {
+        id: 'yusuf',
+        name: 'Hazrat Yusuf (AS)',
+        arabicName: 'يُوسُفُ عَلَيْهِ ٱلسَّلَامُ',
+        title: 'Kirdar Ki Pakizgi Aur Maaf Karne Ka Hausla',
+        surahRef: 'Surah Yusuf (12:1-111)',
+        themeTag: 'Pakeezgi & Maafi',
+        icon: 'fa-crown',
+        qissa: 'Apne hi bhaiyon ke hasad ki wajah se andhe kunwein mein phenke gaye, ghulam ban kar bike, aur bezurmi ke ilzam mein saalon qaid rahe. Magar har haal mein apni izzat aur imaan ki hifazat ki. Jab Allah ne Misr ka badshah banaya to apne unhi bhaiyon ko baghair kisi badle ke maaf kar diya.',
+        implementation: [
+          'Tanhai aur burai ke mawaqe milne par bhi Allah ke khauf se apne kirdar aur nazar ki hifazat karein.',
+          'Qareebi rishtedaron ke hasad ya bure sulook par sabr karein; Allah waqt aane par izzat zaroor deta hai.',
+          'Taqat aur ikhtiyar milne ke baad badla lene ke bajaye logon ko maaf karna seekhein.'
+        ],
+        duaArabic: 'تَوَفَّنِى مُسْلِمًا وَأَلْحِقْنِى بِٱلصَّـٰلِحِينَ',
+        duaTranslation: 'Mujhe Islam (farmabardari) ki halat mein duniya se uthana aur mujhe nek logon ke sath mila dena.',
+        keyWords: ['أَحْسَن (Behtareen)', 'عَلِيم (Jaanne Wala)', 'حَكِيم (Hikmat Wala)', 'صَبَرَ (Sabr)']
+      },
+      {
+        id: 'musa',
+        name: 'Hazrat Musa (AS)',
+        arabicName: 'مُوسَىٰ عَلَيْهِ ٱلسَّلَامُ',
+        title: 'Zulm Ke Khilaf Jur’at Aur Allah Ki Madad Ka Yaqeen',
+        surahRef: 'Surah Taha (20:9-98) • Surah Ash-Shu’ara (26:61-62)',
+        themeTag: 'Himmat & Yaqeen',
+        icon: 'fa-water',
+        qissa: 'Jab Firaun ne Bani Israel par zulm ki inteha kar di to Allah ne Hazrat Musa (AS) ko us ke darbar mein haq ki awaz buland karne bheja. Jab peeche Firaun ka lashkar aur aage samandar tha, tab bhi Musa (AS) ne ghabrane ke bajaye kaha: "Mera Rabb mere sath hai, woh zaroor rasta dikhayega."',
+        implementation: [
+          'Jab samne samandar aur peeche Firaun jaisi mushkil ho, tab bhi na-umeed na hon — "Inna ma’iya Rabbi" par yaqeen rakhein.',
+          'Kisi bhi bare kaam, interview ya imtihan se pehle Hazrat Musa (AS) ki mashhoor dua "Rabbi-shrah li sadri" parhein.',
+          'Zulm aur na-insafi ke samne khamosh rehne ke bajaye hikmat aur himmat se sach ka sath dein.'
+        ],
+        duaArabic: 'رَبِّ ٱشْرَحْ لِى صَدْرِى وَيَسِّرْ لِىٓ أَمْرِى',
+        duaTranslation: 'Ae mere Rabb! Mera seena mere liye khol de aur mera kaam mere liye aasan kar de.',
+        keyWords: ['أَرْسَلَ (Bheja)', 'هَدَىٰ (Hidayat Di)', 'أَمْر (Kaam/Hukum)', 'ظَلَمَ (Zulm)']
+      },
+      {
+        id: 'ayub',
+        name: 'Hazrat Ayub (AS)',
+        arabicName: 'أَيُّوبُ عَلَيْهِ ٱلسَّلَامُ',
+        title: 'Bimari Aur Azmaish Mein Shukar-o-Sabr Ki Misal',
+        surahRef: 'Surah Al-Anbiya (21:83-84) • Surah Sad (38:41-44)',
+        themeTag: 'Bimari Mein Sabr',
+        icon: 'fa-heart-pulse',
+        qissa: 'Hazrat Ayub (AS) ko Allah ne be-shumar maal, sehat aur aulad di thi. Phir sakht azmaish aayi — sab maal chala gaya, aulad wafat pa gayi aur saalon tak sakht bimari rahi. Magar aap ki zaban par kabhi shikwa nahi aaya, sirf nihayat adab se Allah se reham ki dua ki, aur Allah ne sab kuch dugna lauta diya.',
+        implementation: [
+          'Bimari, maali nuqsan ya kisi pyare ki judai mein Allah se shikwa karne ke bajaye sabr aur shukar karein.',
+          'Dua mangte waqt Allah ki rehmat ka waseela dein, jaise Hazrat Ayub (AS) ne adab se pukara.',
+          'Yaqeen rakhein ke har sakht azmaish ke baad Allah ki taraf se shifa aur khushhali zaroor aati hai.'
+        ],
+        duaArabic: 'أَنِّى مَسَّنِىَ ٱلضُّرُّ وَأَنتَ أَرْحَمُ ٱلرَّٰحِمِينَ',
+        duaTranslation: '(Ae Rabb!) Mujhe takleef pahunchi hai aur Tu sab reham karne walon se barh kar reham karne wala hai.',
+        keyWords: ['رَحْمَة (Rehmat)', 'عَبْد (Banda)', 'صَبَرَ (Sabr)', 'رَبّ (Rabb)']
+      },
+      {
+        id: 'yunus',
+        name: 'Hazrat Yunus (AS)',
+        arabicName: 'يُونُسُ عَلَيْهِ ٱلسَّلَامُ',
+        title: 'Ghabrahat Aur Tanhai Mein Tasbeeh Ki Taqat',
+        surahRef: 'Surah Al-Anbiya (21:87-88) • Surah As-Saffat (37:139-148)',
+        themeTag: 'Depression Se Nijat',
+        icon: 'fa-water',
+        qissa: 'Jab Hazrat Yunus (AS) ki qaum ne baat na maani to aap Allah ke hukum ka intezar kiye baghair basti se nikal gaye. Samandar mein qura-andazi ke baad aap ko machhli ne nigal liya. Teen andheron (raat, samandar aur machhli ke pait) mein aap ne Allah ki tasbeeh ki to Allah ne unhein nijat di.',
+        implementation: [
+          'Jaldi-bazi aur ghusse mein kabhi aham faisle na karein; har kaam mein sabr se kaam lein.',
+          'Jab zindagi mein har taraf andhera (depression ya pareshani) nazar aaye to "Ayat-e-Kareema" ka wird karein.',
+          'Apni kotahi ka aitraf karna aur Allah ki paki bayan karna har musibat se nikalne ki chabi hai.'
+        ],
+        duaArabic: 'لَّآ إِلَـٰهَ إِلَّآ أَنتَ سُبْحَـٰنَكَ إِنِّى كُنتُ مِنَ ٱلظَّـٰلِمِينَ',
+        duaTranslation: 'Tere siwa koi mabood nahi, Tu paak hai, beshak main hi ghalti karne walon mein se tha.',
+        keyWords: ['إِلَـٰه (Mabood)', 'ظَـٰلِم (Ghalti Karne Wala)', 'نَجَّىٰ (Nijat Di)', 'مُؤْمِنُون (Imaan Wale)']
+      },
+      {
+        id: 'muhammad',
+        name: 'Hazrat Muhammad (ﷺ)',
+        arabicName: 'مُحَمَّدٌ رَّسُولُ ٱللَّهِ ﷺ',
+        title: 'Rehmat-ul-Lil-Alameen Aur Behtareen Akhlaq',
+        surahRef: 'Surah Al-Anbiya (21:107) • Surah Al-Qalam (68:4)',
+        themeTag: 'Kamil Uswa-e-Hasana',
+        icon: 'fa-mosque',
+        qissa: 'Aap (ﷺ) ko Allah ne tamama jahanon ke liye rehmat bana kar bheja. Makka ke dushmanon ke patthar khane aur Taif mein zakhmi hone ke bawajood aap ne bad-dua nahi di, balke un ki hidayat ki dua ki. Ghar walon, ghulamon, yateemon aur parosiyon ke sath aap ka akhlaq poori insaniyat ke liye behtareen namoona hai.',
+        implementation: [
+          'Apne ghar walon, bachon aur matihaat (staff) ke sath narmi, muskurahat aur izzat se pesh aayein.',
+          'Buraai ka badla buraai se dene ke bajaye achai aur afw-o-darguzar (maafi) se dein.',
+          'Rozana Quran ki tilawat aur us ke meanings samajh kar apni zindagi mein nafiz karne ki aadat banayein.'
+        ],
+        duaArabic: 'رَبَّنَآ ءَاتِنَا فِى ٱلدُّنْيَا حَسَنَةً وَفِى ٱلْـَٔاخِرَةِ حَسَنَةً وَقِنَا عَذَابَ ٱلنَّارِ',
+        duaTranslation: 'Ae hamare Rabb! Humein duniya mein bhi bhalai de aur akhirat mein bhi bhalai de, aur humein aag ke azaab se bacha.',
+        keyWords: ['رَسُول (Rasool)', 'رَحْمَة (Rehmat)', 'حَسَنَة (Bhalai)', 'ءَاخِرَة (Akhirat)']
+      }
+    ];
+
+    const NAMAZ_DUAIN = [
+      {
+        id: 'sana',
+        step: '1. Qiyam (Takbeer Ke Baad)',
+        category: 'qiyam',
+        title: 'Sana (Subhanaka Allahumma)',
+        when: 'Pehli rakat mein Allahu Akbar keh kar hath bandhne ke baad parhein',
+        arabic: 'سُبْحَانَكَ اللَّهُمَّ وَبِحَمْدِكَ وَتَبَارَكَ اسْمُكَ وَتَعَالَىٰ جَدُّكَ وَلَا إِلَٰهَ غَيْرُكَ',
+        transliteration: 'Subhanaka Allahumma wa bihamdika, wa tabarakasmuka, wa ta‘ala jadduka, wa la ilaha ghayruk.',
+        urdu: 'اے اللہ! تو پاک ہے اور تیری ہی تعریف ہے، تیرا نام بابرکت ہے، تیری شان بہت بلند ہے اور تیرے سوا کوئی معبود نہیں۔',
+        romanUrdu: 'Ae Allah! Tu paak hai aur teri hi tareef hai, tera naam babarkat hai, teri shan bahut buland hai aur tere siwa koi mabood nahin.',
+        english: 'Glory be to You, O Allah, and all praise is due to You. Blessed is Your Name, Exalted is Your Majesty, and there is no deity worthy of worship except You.'
+      },
+      {
+        id: 'ruku',
+        step: '2. Ruku Ki Tasbeeh',
+        category: 'ruku',
+        title: 'Ruku Mein Jhukne Ki Dua',
+        when: 'Ruku mein dono ghutno ko pakar kar kam az kam 3 martaba parhein',
+        arabic: 'سُبْحَانَ رَبِّيَ الْعَظِيمِ',
+        transliteration: 'Subhana Rabbiyal-‘Adheem (3 times)',
+        urdu: 'پاک ہے میرا رب جو عظمت والا ہے۔',
+        romanUrdu: 'Paak hai mera Rabb jo azmat wala hai.',
+        english: 'Glory be to my Lord, the Supreme.'
+      },
+      {
+        id: 'qauma',
+        step: '3. Ruku Se Uthne Ki Dua (Qauma)',
+        category: 'ruku',
+        title: 'Ruku Se Seedha Khare Hone Par',
+        when: 'Ruku se uthte waqt "Sami‘Allahu liman hamidah" ke baad seedha khare ho kar parhein',
+        arabic: 'رَبَّنَا وَلَكَ الْحَمْدُ حَمْدًا كَثِيرًا طَيِّبًا مُبَارَكًا فِيهِ',
+        transliteration: 'Rabbana wa lakal-hamd, hamdan katheeran tayyiban mubarakan feeh.',
+        urdu: 'اے ہمارے رب! تیرے ہی لیے تمام تعریفیں ہیں، بہت زیادہ، پاکیزہ اور برکت والی تعریف۔',
+        romanUrdu: 'Ae hamare Rabb! Tere hi liye tamam tareefein hain, bahut zyada, pakeeza aur barkat wali tareef.',
+        english: 'Our Lord, to You belongs all praise—abundant, pure, and blessed praise.'
+      },
+      {
+        id: 'sajdah',
+        step: '4. Sajdah Ki Tasbeeh',
+        category: 'sajdah',
+        title: 'Sajdah Mein Parhne Ki Dua',
+        when: 'Sajdah ki halat mein kam az kam 3 martaba parhein (yeh Allah ke sab se qareeb hone ka waqt hai)',
+        arabic: 'سُبْحَانَ رَبِّيَ الْأَعْلَىٰ',
+        transliteration: 'Subhana Rabbiyal-A‘la (3 times)',
+        urdu: 'پاک ہے میرا رب جو سب سے بلند ہے۔',
+        romanUrdu: 'Paak hai mera Rabb jo sab se buland hai.',
+        english: 'Glory be to my Lord, the Most High.'
+      },
+      {
+        id: 'jalsa',
+        step: '5. Do Sajdon Ke Darmiyan (Jalsa)',
+        category: 'sajdah',
+        title: 'Dono Sajdon Ke Beech Baithne Ki Dua',
+        when: 'Pehle sajdah se uth kar doosre sajdah mein jane se pehle baith kar parhein',
+        arabic: 'رَبِّ اغْفِرْ لِي رَبِّ اغْفِرْ لِي',
+        transliteration: 'Rabbighfir li, Rabbighfir li.',
+        urdu: 'اے میرے رب مجھے بخش دے، اے میرے رب مجھے بخش دے۔',
+        romanUrdu: 'Ae mere Rabb mujhe bakhsh de, ae mere Rabb mujhe bakhsh de.',
+        english: 'My Lord, forgive me; my Lord, forgive me.'
+      },
+      {
+        id: 'tashahhud',
+        step: '6. Qaida (Tashahhud / Attahiyyat)',
+        category: 'qaida',
+        title: 'Attahiyyat (Tashahhud)',
+        when: 'Doosri aur aakhri rakat mein baith kar parhein',
+        arabic: 'التَّحِيَّاتُ لِلَّهِ وَالصَّلَوَاتُ وَالطَّيِّبَاتُ ، السَّلَامُ عَلَيْكَ أَيُّهَا النَّبِيُّ وَرَحْمَةُ اللَّهِ وَبَرَكَاتُهُ ، السَّلَامُ عَلَيْنَا وَعَلَىٰ عِبَادِ اللَّهِ الصَّالِحِينَ ، أَشْهَدُ أَنْ لَا إِلَٰهَ إِلَّا اللَّهُ وَأَشْهَدُ أَنْ مُحَمَّدًا عَبْدُهُ وَرَسُولُهُ',
+        transliteration: 'At-tahiyyatu lillahi was-salawatu wat-tayyibat. As-salamu ‘alayka ayyuhan-Nabiyyu wa rahmatullahi wa barakatuh. As-salamu ‘alayna wa ‘ala ‘ibadillahis-saliheen. Ash-hadu an la ilaha illallahu wa ash-hadu anna Muhammadan ‘abduhu wa rasuluh.',
+        urdu: 'تمام قولی، بدنی اور مالی عبادتیں اللہ ہی کے لیے ہیں۔ اے نبی (ﷺ)! آپ پر سلام ہو اور اللہ کی رحمت اور برکتیں ہوں۔ ہم پر اور اللہ کے نیک بندوں پر بھی سلام ہو۔ میں گواہی دیتا ہوں کہ اللہ کے سوا کوئی معبود نہیں اور میں گواہی دیتا ہوں کہ محمد (ﷺ) اللہ کے بندے اور رسول ہیں۔',
+        romanUrdu: 'Tamam qauli, badani aur maali ibadatein Allah hi ke liye hain. Ae Nabi (SAW)! Aap par salam ho aur Allah ki rehmat aur barkatein hon. Hum par aur Allah ke nek bandon par bhi salam ho. Main gawahi deta hoon ke Allah ke siwa koi mabood nahin aur Muhammad (SAW) Allah ke bande aur rasool hain.',
+        english: 'All compliments, prayers, and pure words are due to Allah. Peace be upon you, O Prophet, and the mercy of Allah and His blessings. Peace be upon us and upon the righteous servants of Allah. I bear witness that there is no deity except Allah, and I bear witness that Muhammad is His servant and Messenger.'
+      },
+      {
+        id: 'durood',
+        step: '7. Aakhri Qaida (Durood-e-Ibrahimi)',
+        category: 'qaida',
+        title: 'Durood-e-Ibrahimi',
+        when: 'Aakhri rakat mein Attahiyyat ke baad salam pherne se pehle parhein',
+        arabic: 'اللَّهُمَّ صَلِّ عَلَىٰ مُحَمَّدٍ وَعَلَىٰ آلِ مُحَمَّدٍ كَمَا صَلَّيْتَ عَلَىٰ إِبْرَاهِيمَ وَعَلَىٰ آلِ إِبْرَاهِيمَ إِنَّكَ حَمِيدٌ مَجِيدٌ ، اللَّهُمَّ بَارِكْ عَلَىٰ مُحَمَّدٍ وَعَلَىٰ آلِ مُحَمَّدٍ كَمَا بَارَكْتَ عَلَىٰ إِبْرَاهِيمَ وَعَلَىٰ آلِ إِبْرَاهِيمَ إِنَّكَ حَمِيدٌ مَجِيدٌ',
+        transliteration: 'Allahumma salli ‘ala Muhammadin wa ‘ala aali Muhammadin kama sallayta ‘ala Ibrahima wa ‘ala aali Ibrahima innaka Hameedun Majeed. Allahumma barik ‘ala Muhammadin wa ‘ala aali Muhammadin kama barakta ‘ala Ibrahima wa ‘ala aali Ibrahima innaka Hameedun Majeed.',
+        urdu: 'اے اللہ! رحمت نازل فرما محمد (ﷺ) پر اور محمد (ﷺ) کی آل پر، جس طرح تو نے رحمت نازل فرمائی ابراہیم (علیہ السلام) پر اور ابراہیم (علیہ السلام) کی آل پر، بے شک تو تعریف والا اور بزرگی والا ہے۔ اے اللہ! برکت نازل فرما محمد (ﷺ) پر اور محمد (ﷺ) کی آل پر، جس طرح تو نے برکت نازل فرمائی ابراہیم (علیہ السلام) پر اور ابراہیم (علیہ السلام) کی آل پر، بے شک تو تعریف والا اور بزرگی والا ہے۔',
+        romanUrdu: 'Ae Allah! Rehmat nazil farma Muhammad (SAW) par aur Muhammad (SAW) ki aal par, jis tarah Tu ne rehmat nazil farmayi Ibrahim (AS) par aur Ibrahim (AS) ki aal par, beshak Tu tareef wala aur buzurgi wala hai. Ae Allah! Barkat nazil farma Muhammad (SAW) par aur Muhammad (SAW) ki aal par, jis tarah Tu ne barkat nazil farmayi Ibrahim (AS) par aur Ibrahim (AS) ki aal par, beshak Tu tareef wala aur buzurgi wala hai.',
+        english: 'O Allah, send grace upon Muhammad and upon the family of Muhammad, just as You sent grace upon Ibrahim and upon the family of Ibrahim; indeed, You are Praiseworthy and Glorious. O Allah, bless Muhammad and the family of Muhammad, just as You blessed Ibrahim and the family of Ibrahim; indeed, You are Praiseworthy and Glorious.'
+      },
+      {
+        id: 'dua_masura',
+        step: '8. Salam Se Pehle Ki Dua (Dua-e-Masura)',
+        category: 'qaida',
+        title: 'Rabbij‘alni Muqimas-Salati (Quranic Dua)',
+        when: 'Durood-e-Ibrahimi ke baad salam pherne se pehle yeh Quranic dua parhein',
+        arabic: 'رَبِّ اجْعَلْنِي مُقِيمَ الصَّلَاةِ وَمِن ذُرِّيَّتِي ۚ رَبَّنَا وَتَقَبَّلْ دُعَاءِ ﴿٤٠﴾ رَبَّنَا اغْفِرْ لِي وَلِوَالِدَيَّ وَلِلْمُؤْمِنِينَ يَوْمَ يَقُومُ الْحِسَابُ',
+        transliteration: 'Rabbij‘alni muqimas-salati wa min dhurriyyati, Rabbana wa taqabbal du‘a. Rabbanaghfir li wa liwalidayya wa lil-mu’minina yawma yaqumul-hisab.',
+        urdu: 'اے میرے رب! مجھے نماز قائم کرنے والا بنا دے اور میری اولاد کو بھی، اے ہمارے رب! میری دعا قبول فرما۔ اے ہمارے رب! مجھے بخش دے، میرے والدین کو اور تمام مومنوں کو جس دن حساب قائم ہوگا۔',
+        romanUrdu: 'Ae mere Rabb! Mujhe namaz qaim karne wala bana de aur meri aulad ko bhi, ae hamare Rabb! Meri dua qubool farma. Ae hamare Rabb! Mujhe bakhsh de, mere walidain ko aur tamam mominon ko jis din hisab qaim hoga.',
+        english: 'My Lord, make me an establisher of prayer, and from my descendants. Our Lord, and accept my supplication. Our Lord, forgive me and my parents and the believers the Day the account is established.'
+      },
+      {
+        id: 'after_salam',
+        step: '9. Salam Ke Baad Ki Masnoon Duain',
+        category: 'baad_salam',
+        title: 'Allahumma Antas-Salam (Salam Ke Foran Baad)',
+        when: 'Dono taraf salam pherne ke baad 3 baar Astaghfirullah aur phir yeh dua parhein',
+        arabic: 'أَسْتَغْفِرُ اللَّهَ (٣ مَرَّاتٍ) ، اللَّهُمَّ أَنْتَ السَّلَامُ وَمِنْكَ السَّلَامُ تَبَارَكْتَ يَا ذَا الْجَلَالِ وَالْإِكْرَامِ',
+        transliteration: 'Astaghfirullah (3 times). Allahumma Antas-Salamu wa minkas-salam, tabarakta ya Dhal-Jalali wal-Ikram.',
+        urdu: 'میں اللہ سے بخشش مانگتا ہوں (۳ بار)۔ اے اللہ! تو ہی سلامتی والا ہے اور تیری ہی طرف سے سلامتی ہے، تو بہت بابرکت ہے اے عظمت اور عزت والے۔',
+        romanUrdu: 'Main Allah se bakhshish mangta hoon (3 baar). Ae Allah! Tu hi salamti wala hai aur teri hi taraf se salamti hai, Tu bahut babarkat hai ae azmat aur izzat wale.',
+        english: 'I seek forgiveness from Allah (3 times). O Allah, You are Peace and from You comes peace; Blessed are You, O Possessor of Majesty and Honor.'
+      }
+    ];
+
+    const DAILY_MOTIVATIONS = [
+      {
+        arabic: 'وَلَقَدْ يَسَّرْنَا ٱلْقُرْءَانَ لِلذِّكْرِ',
+        title: '75% Quran Samajhna Mumkin Hai!',
+        body: 'Allah ne Quran ko samajhne ke liye aasan banaya hai. Aaj sirf 5 naye alfaaz yaad karein aur Namaz mein un ka asar dekhein!'
+      },
+      {
+        arabic: 'فَٱذْكُرُونِىٓ أَذْكُرْكُمْ وَٱشْكُرُوا۟ لِى',
+        title: 'Allah Ko Yaad Karein, Woh Aap Ko Yaad Rakhega!',
+        body: 'Jab aap Quran ke alfaaz samajh kar parhte hain to Allah se direct guftagu ka maza aata hai.'
+      },
+      {
+        arabic: 'إِنَّ مَعَ ٱلْعُسْرِ يُسْرًا',
+        title: 'Har Mushkil Ke Sath Aasani Hai!',
+        body: 'Kabhi himmat na harein — har naya lafz jo aap seekhte hain woh aap ke dil ka noor banta ja raha hai.'
+      },
+      {
+        arabic: 'وَقُل رَّبِّ زِدْنِى عِلْمًا',
+        title: 'Ilm Mein Izafe Ki Dua!',
+        body: 'Quran ka ilm sab se afzal ilm hai. Aaj 10 minute nikal kar 1 lesson ke alfaaz zaroor revise karein.'
+      },
+      {
+        arabic: 'أَلَا بِذِكْرِ ٱللَّهِ تَطْمَئِنُّ ٱلْقُلُوبُ',
+        title: 'Dil Ka Sukoon Quran Mein Hai!',
+        body: 'Bechaini aur pareshani ka behtareen ilaj Allah ke kalam ko samajh kar parhna hai.'
+      },
+      {
+        arabic: 'قَدْ أَفْلَحَ ٱلْمُؤْمِنُونَ ٱلَّذِينَ هُمْ فِى صَلَاتِهِمْ خَـٰشِعُونَ',
+        title: 'Namaz Mein Khushu Paida Karein!',
+        body: 'Jab aap ko Imam ki qirat aur apni Namaz ki duon ka matlab samajh aayega to Namaz mein khushu khud ba khud aayega.'
+      },
+      {
+        arabic: 'خَيْرُكُمْ مَنْ تَعَلَّمَ الْقُرْآنَ وَعَلَّمَهُ',
+        title: 'Behtareen Insaan Banein!',
+        body: 'Nabi (ﷺ) ne farmaya: Tum mein se behtareen woh hai jo Quran seekhe aur sikhaye. Aaj apna sabaq mukammal karein!'
+      },
+      {
+        arabic: 'إِنَّ ٱللَّهَ مَعَ ٱلصَّـٰبِرِينَ',
+        title: 'Sabr Aur Istiqamat Ka Inam!',
+        body: 'Rozana thora thora seekhna hamesha ke liye yaad rehta hai. Aaj 5 flashcards zaroor flip karein!'
+      }
+    ];
+
+    // ================= APP STATE & PERSISTENCE =================
+    const STORAGE_KEY = 'quranic_dict_state_v1';
+    let state = {
+      activeTab: 'dictionary',
+      searchQuery: '',
+      selectedLesson: 'all',
+      filterStatus: 'all',
+      selectedNamazCat: 'all',
+      memorizedNamazIds: [],
+      selectedNabiId: 'all',
+      reflectedAmbiyaIds: [],
+      learnedIds: [],
+      bookmarkedIds: [],
+      darkMode: false,
+      reminderEnabled: false,
+      reminderTimes: ['08:00'],
+      reminderRepeat: 'daily',
+      randomReminderEnabled: true,
+      nextRandomTimestamp: 0,
+      lastIntervalTimestamp: 0,
+      notifiedSlotsToday: [],
+      lastNotifiedDate: '',
+      motivationOffset: 0,
+      fcLesson: 'all',
+      fcIndex: 0,
+      fcFlipped: false,
+      quizQuestions: [],
+      quizCurrent: 0,
+      quizScore: 0,
+      quizHighScore: 0,
+      quizStreak: 0,
+      quizAnswered: false,
+      quizSelectedOption: null,
+      quizFinished: false,
+      quizMissedIds: []
+    };
+
+    function loadState() {
+      try {
+        const saved = localStorage.getItem(STORAGE_KEY);
+        if (saved) {
+          const parsed = JSON.parse(saved);
+          state.learnedIds = Array.isArray(parsed.learnedIds) ? parsed.learnedIds : [];
+          state.bookmarkedIds = Array.isArray(parsed.bookmarkedIds) ? parsed.bookmarkedIds : [];
+          state.memorizedNamazIds = Array.isArray(parsed.memorizedNamazIds) ? parsed.memorizedNamazIds : [];
+          state.reflectedAmbiyaIds = Array.isArray(parsed.reflectedAmbiyaIds) ? parsed.reflectedAmbiyaIds : [];
+          state.quizHighScore = Number(parsed.quizHighScore) || 0;
+          state.darkMode = Boolean(parsed.darkMode);
+          state.reminderEnabled = Boolean(parsed.reminderEnabled);
+          if (Array.isArray(parsed.reminderTimes) && parsed.reminderTimes.length > 0) {
+            state.reminderTimes = parsed.reminderTimes;
+          } else if (parsed.reminderTime) {
+            state.reminderTimes = [parsed.reminderTime];
+          }
+          state.reminderRepeat = parsed.reminderRepeat || 'daily';
+          state.randomReminderEnabled = parsed.randomReminderEnabled !== undefined ? Boolean(parsed.randomReminderEnabled) : true;
+          state.nextRandomTimestamp = Number(parsed.nextRandomTimestamp) || 0;
+          state.lastIntervalTimestamp = Number(parsed.lastIntervalTimestamp) || 0;
+          state.notifiedSlotsToday = Array.isArray(parsed.notifiedSlotsToday) ? parsed.notifiedSlotsToday : [];
+          state.lastNotifiedDate = parsed.lastNotifiedDate || '';
+        }
+      } catch (e) {
+        console.warn('Could not load saved state:', e);
+      }
+      applyTheme();
+      updateReminderUI();
+    }
+
+    function saveState() {
+      try {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify({
+          learnedIds: state.learnedIds,
+          bookmarkedIds: state.bookmarkedIds,
+          memorizedNamazIds: state.memorizedNamazIds,
+          reflectedAmbiyaIds: state.reflectedAmbiyaIds,
+          quizHighScore: state.quizHighScore,
+          darkMode: state.darkMode,
+          reminderEnabled: state.reminderEnabled,
+          reminderTimes: state.reminderTimes,
+          reminderRepeat: state.reminderRepeat,
+          randomReminderEnabled: state.randomReminderEnabled,
+          nextRandomTimestamp: state.nextRandomTimestamp,
+          lastIntervalTimestamp: state.lastIntervalTimestamp,
+          notifiedSlotsToday: state.notifiedSlotsToday,
+          lastNotifiedDate: state.lastNotifiedDate
+        }));
+      } catch (e) {
+        console.warn('Could not save state:', e);
+      }
+      updateHeaderProgress();
+    }
+
+    function applyTheme() {
+      const htmlEl = document.documentElement;
+      const iconEl = document.getElementById('themeIcon');
+      if (state.darkMode) {
+        htmlEl.classList.add('dark');
+        if (iconEl) iconEl.className = 'fa-solid fa-sun text-sm text-amber-300';
+      } else {
+        htmlEl.classList.remove('dark');
+        if (iconEl) iconEl.className = 'fa-solid fa-moon text-sm';
+      }
+    }
+
+    function toggleDarkMode() {
+      state.darkMode = !state.darkMode;
+      applyTheme();
+      saveState();
+      showToast(state.darkMode ? 'Dark Mode On' : 'Light Mode On');
+    }
+
+    function calculateQuranComprehension() {
+      let totalShare = 0;
+      LESSONS.forEach(lesson => {
+        const wordsInLesson = QURAN_WORDS.filter(w => w.lesson === lesson.id);
+        if (wordsInLesson.length > 0) {
+          const learnedInLesson = wordsInLesson.filter(w => state.learnedIds.includes(w.id)).length;
+          totalShare += (learnedInLesson / wordsInLesson.length) * lesson.quranShare;
+        }
+      });
+      return totalShare.toFixed(1);
+    }
+
+    function updateHeaderProgress() {
+      const learnedCountEl = document.getElementById('headerLearnedCount');
+      const totalWordsEl = document.getElementById('headerTotalWords');
+      const quranPctEl = document.getElementById('headerQuranPercent');
+      const progressBarEl = document.getElementById('headerProgressBar');
+
+      const learnedCount = state.learnedIds.length;
+      const totalCount = QURAN_WORDS.length;
+      const barPct = totalCount > 0 ? Math.round((learnedCount / totalCount) * 100) : 0;
+
+      if (learnedCountEl) learnedCountEl.textContent = learnedCount;
+      if (totalWordsEl) totalWordsEl.textContent = totalCount;
+      if (quranPctEl) quranPctEl.textContent = calculateQuranComprehension();
+      if (progressBarEl) progressBarEl.style.width = `${barPct}%`;
+    }
+
+    let toastTimeout = null;
+    function showToast(msg) {
+      const toast = document.getElementById('toast');
+      const toastMsg = document.getElementById('toastMsg');
+      if (!toast || !toastMsg) return;
+
+      toastMsg.textContent = msg;
+      toast.classList.remove('opacity-0', 'translate-y-2');
+      toast.classList.add('opacity-100', 'translate-y-0');
+
+      clearTimeout(toastTimeout);
+      toastTimeout = setTimeout(() => {
+        toast.classList.remove('opacity-100', 'translate-y-0');
+        toast.classList.add('opacity-0', 'translate-y-2');
+      }, 2200);
+    }
+
+    function openModal(id) {
+      const modal = document.getElementById(id);
+      if (modal) modal.classList.remove('hidden');
+      if (id === 'reminderModal') {
+        updateReminderUI();
+      }
+    }
+
+    function closeModal(id) {
+      const modal = document.getElementById(id);
+      if (modal) modal.classList.add('hidden');
+    }
+
+    // ================= DAILY MOTIVATIONAL REMINDER ENGINE =================
+    function getTodaysMotivation() {
+      const now = new Date();
+      const startOfYear = new Date(now.getFullYear(), 0, 0);
+      const diff = now - startOfYear;
+      const dayOfYear = Math.floor(diff / (1000 * 60 * 60 * 24));
+      const idx = (dayOfYear + state.motivationOffset) % DAILY_MOTIVATIONS.length;
+      return DAILY_MOTIVATIONS[idx];
+    }
+
+    function getRandomMotivation() {
+      const randomIdx = Math.floor(Math.random() * DAILY_MOTIVATIONS.length);
+      return DAILY_MOTIVATIONS[randomIdx];
+    }
+
+    function scheduleNextRandomTime() {
+      const minMs = 45 * 60 * 1000;
+      const maxMs = 210 * 60 * 1000;
+      const randomDelay = Math.floor(Math.random() * (maxMs - minMs)) + minMs;
+      let target = Date.now() + randomDelay;
+      const targetDate = new Date(target);
+      const hour = targetDate.getHours();
+      if (hour >= 22 || hour < 7) {
+        const nextMorning = new Date();
+        if (hour >= 22) nextMorning.setDate(nextMorning.getDate() + 1);
+        nextMorning.setHours(8 + Math.floor(Math.random() * 3), Math.floor(Math.random() * 60), 0, 0);
+        target = nextMorning.getTime();
+      }
+      state.nextRandomTimestamp = target;
+      saveState();
+    }
+
+    function formatTime12h(time24) {
+      if (!time24 || !time24.includes(':')) return time24;
+      const [hStr, mStr] = time24.split(':');
+      let h = Number(hStr);
+      const ampm = h >= 12 ? 'PM' : 'AM';
+      h = h % 12 || 12;
+      return `${h}:${mStr} ${ampm}`;
+    }
+
+    function updateReminderUI() {
+      const dot = document.getElementById('reminderActiveDot');
+      const toggleBtn = document.getElementById('reminderToggleBtn');
+      const timesListEl = document.getElementById('reminderTimesList');
+      const repeatSelect = document.getElementById('reminderRepeatSelect');
+      const randomBtn = document.getElementById('randomReminderToggleBtn');
+      const quoteCard = document.getElementById('dailyQuoteCard');
+
+      if (dot) {
+        if (state.reminderEnabled) dot.classList.remove('hidden');
+        else dot.classList.add('hidden');
+      }
+      if (toggleBtn) {
+        toggleBtn.textContent = state.reminderEnabled ? 'Active (On)' : 'Enable';
+        toggleBtn.className = state.reminderEnabled
+          ? 'px-4 py-2 rounded-xl font-extrabold text-xs transition active:scale-95 bg-emerald-600 text-white shadow-sm'
+          : 'px-4 py-2 rounded-xl font-extrabold text-xs transition active:scale-95 bg-slate-200 dark:bg-slate-700 text-slate-800 dark:text-white';
+      }
+      if (timesListEl) {
+        timesListEl.innerHTML = state.reminderTimes.map(t => `
+          <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-xl bg-emerald-100/90 dark:bg-emerald-900/50 text-emerald-950 dark:text-amber-300 font-bold text-xs">
+            <i class="fa-regular fa-clock text-[10px]"></i>
+            ${formatTime12h(t)}
+            ${state.reminderTimes.length > 1 ? `
+              <button onclick="removeReminderTime('${t}')" title="Remove Time" class="ml-0.5 text-rose-600 dark:text-rose-400 hover:opacity-80">
+                <i class="fa-solid fa-xmark text-[10px]"></i>
+              </button>
+            ` : ''}
+          </span>
+        `).join('');
+      }
+      if (repeatSelect) {
+        repeatSelect.value = state.reminderRepeat;
+      }
+      if (randomBtn) {
+        randomBtn.textContent = state.randomReminderEnabled ? 'Random On' : 'Off';
+        randomBtn.className = state.randomReminderEnabled
+          ? 'px-3 py-1.5 rounded-xl font-extrabold text-[11px] transition active:scale-95 bg-amber-500 text-emerald-950 shadow-sm'
+          : 'px-3 py-1.5 rounded-xl font-extrabold text-[11px] transition active:scale-95 bg-slate-200 dark:bg-slate-700 text-slate-700 dark:text-slate-300';
+      }
+      if (quoteCard) {
+        const msg = getTodaysMotivation();
+        quoteCard.innerHTML = `
+          <div class="flex items-center justify-between mb-2">
+            <span class="text-[10px] font-bold uppercase tracking-wider text-amber-300 bg-amber-400/15 px-2.5 py-0.5 rounded-full">
+              Aaj Ka Motivational Paigham
+            </span>
+            <i class="fa-solid fa-sparkles text-amber-300 text-xs"></i>
+          </div>
+          ${msg.arabic ? `
+            <div class="arabic-text text-2xl sm:text-3xl font-bold text-amber-300 text-right my-3 bg-black/25 px-3.5 py-2.5 rounded-2xl border border-white/10" dir="rtl">
+              ${msg.arabic}
+            </div>
+          ` : ''}
+          <h4 class="text-sm sm:text-base font-extrabold text-white mt-1.5">
+            ${msg.title}
+          </h4>
+          <p class="text-xs sm:text-sm text-emerald-100/95 mt-1 leading-relaxed">
+            ${msg.body}
+          </p>
+        `;
+      }
+    }
+
+    function cycleNextMotivation() {
+      state.motivationOffset = (state.motivationOffset + 1) % DAILY_MOTIVATIONS.length;
+      updateReminderUI();
+    }
+
+    function addReminderTime() {
+      const input = document.getElementById('newReminderTimeInput');
+      if (!input || !input.value) return;
+      const val = input.value;
+      if (state.reminderTimes.includes(val)) {
+        showToast('Yeh waqt pehle se add hai');
+        return;
+      }
+      state.reminderTimes.push(val);
+      state.reminderTimes.sort();
+      state.reminderEnabled = true;
+      saveState();
+      updateReminderUI();
+      showToast(`Time ${formatTime12h(val)} add ho gaya!`);
+    }
+
+    function removeReminderTime(timeVal) {
+      if (state.reminderTimes.length <= 1) {
+        showToast('Kam az kam 1 reminder time zaroori hai');
+        return;
+      }
+      state.reminderTimes = state.reminderTimes.filter(t => t !== timeVal);
+      saveState();
+      updateReminderUI();
+      showToast(`${formatTime12h(timeVal)} hata diya gaya`);
+    }
+
+    function updateReminderRepeat(repeatVal) {
+      state.reminderRepeat = repeatVal;
+      state.lastIntervalTimestamp = Date.now();
+      saveState();
+      updateReminderUI();
+      showToast('Repeat schedule update ho gaya');
+    }
+
+    function toggleRandomReminder() {
+      state.randomReminderEnabled = !state.randomReminderEnabled;
+      if (state.randomReminderEnabled) {
+        state.reminderEnabled = true;
+        scheduleNextRandomTime();
+        showToast('Random Quranic Notifications On!');
+      } else {
+        saveState();
+        showToast('Random Notifications Off');
+      }
+      updateReminderUI();
+    }
+
+    async function toggleDailyReminder() {
+      if (!state.reminderEnabled) {
+        if ('Notification' in window) {
+          try {
+            const permission = await Notification.requestPermission();
+            state.reminderEnabled = true;
+            if (!state.nextRandomTimestamp) scheduleNextRandomTime();
+            saveState();
+            updateReminderUI();
+            if (permission === 'granted') {
+              showToast('Mobile Notification Bar Alerts On!');
+            } else {
+              showToast('Reminder On (Browser Settings se Notifications Allow karein)');
+            }
+          } catch (e) {
+            state.reminderEnabled = true;
+            saveState();
+            updateReminderUI();
+            showToast('Daily Reminder On!');
+          }
+        } else {
+          state.reminderEnabled = true;
+          saveState();
+          updateReminderUI();
+          showToast('Daily Reminder On!');
+        }
+      } else {
+        state.reminderEnabled = false;
+        saveState();
+        updateReminderUI();
+        showToast('Daily Reminder Off kar diya gaya');
+      }
+    }
+
+    async function dispatchSystemNotification(motivationObj) {
+      const title = `📖 ${motivationObj.title}`;
+      const fullBody = `${motivationObj.arabic}\n${motivationObj.body} (${state.learnedIds.length}/${QURAN_WORDS.length} words)`;
+      const options = {
+        body: fullBody,
+        tag: 'quranic-random-reminder-' + Date.now(),
+        renotify: true,
+        vibrate: [200, 100, 200]
+      };
+
+      if ('Notification' in window && Notification.permission === 'granted') {
+        try {
+          if ('serviceWorker' in navigator) {
+            const reg = await navigator.serviceWorker.getRegistration();
+            if (reg && reg.showNotification) {
+              await reg.showNotification(title, options);
+              showToast(`📖 ${motivationObj.title}`);
+              return;
+            }
+          }
+          new Notification(title, options);
+        } catch (e) {
+          console.warn('Notification error:', e);
+        }
+      }
+      showToast(`📖 ${motivationObj.title}`);
+    }
+
+    async function sendTestNotification() {
+      const randomMsg = getRandomMotivation();
+      if ('Notification' in window && Notification.permission !== 'granted') {
+        try {
+          await Notification.requestPermission();
+        } catch (e) {}
+      }
+      await dispatchSystemNotification(randomMsg);
+    }
+
+    function checkScheduledReminder() {
+      if (!state.reminderEnabled) return;
+      const now = new Date();
+      const nowMs = now.getTime();
+      const todayStr = now.toISOString().slice(0, 10);
+      const dayOfWeek = now.getDay();
+
+      if (state.lastNotifiedDate !== todayStr) {
+        state.lastNotifiedDate = todayStr;
+        state.notifiedSlotsToday = [];
+        saveState();
+      }
+
+      if (state.reminderRepeat === 'weekdays' && (dayOfWeek === 0 || dayOfWeek === 6)) {
+        return;
+      }
+
+      const currentMinutes = now.getHours() * 60 + now.getMinutes();
+
+      for (const slot of state.reminderTimes) {
+        if (state.notifiedSlotsToday.includes(slot)) continue;
+        const [targetHour, targetMin] = slot.split(':').map(Number);
+        const targetMinutes = targetHour * 60 + targetMin;
+        if (currentMinutes >= targetMinutes && currentMinutes <= targetMinutes + 15) {
+          state.notifiedSlotsToday.push(slot);
+          saveState();
+          dispatchSystemNotification(getRandomMotivation());
+          return;
+        }
+      }
+
+      if (state.reminderRepeat === 'every2h' || state.reminderRepeat === 'every4h') {
+        const intervalMs = state.reminderRepeat === 'every2h' ? 2 * 3600 * 1000 : 4 * 3600 * 1000;
+        if (!state.lastIntervalTimestamp) {
+          state.lastIntervalTimestamp = nowMs;
+          saveState();
+        } else if (nowMs - state.lastIntervalTimestamp >= intervalMs) {
+          state.lastIntervalTimestamp = nowMs;
+          saveState();
+          dispatchSystemNotification(getRandomMotivation());
+          return;
+        }
+      }
+
+      if (state.randomReminderEnabled) {
+        if (!state.nextRandomTimestamp) {
+          scheduleNextRandomTime();
+        } else if (nowMs >= state.nextRandomTimestamp) {
+          scheduleNextRandomTime();
+          dispatchSystemNotification(getRandomMotivation());
+        }
+      }
+    }
+
+    // ================= AUDIO PRONUNCIATION ENGINE =================
+    let activeAudioPlayer = null;
+    let activeSpeakBtn = null;
+
+    function resetSpeakButtonUI() {
+      if (activeSpeakBtn) {
+        activeSpeakBtn.classList.remove('speaking-pulse', 'text-amber-500');
+        const icon = activeSpeakBtn.querySelector('i');
+        if (icon) {
+          icon.className = 'fa-solid fa-volume-high text-xs';
+        }
+        activeSpeakBtn = null;
+      }
+    }
+
+    function playWebSpeechFallback(cleanText) {
+      if (!('speechSynthesis' in window)) {
+        resetSpeakButtonUI();
+        showToast('Internet connection check karein taake Arabic awaaz chal sake');
+        return;
+      }
+      try {
+        window.speechSynthesis.cancel();
+        const utterance = new SpeechSynthesisUtterance(cleanText);
+        const voices = window.speechSynthesis.getVoices();
+        const arabicVoice = voices.find(v =>
+          v.lang && (v.lang.toLowerCase().includes('ar-sa') || v.lang.toLowerCase().startsWith('ar'))
+        );
+        if (arabicVoice) {
+          utterance.voice = arabicVoice;
+        }
+        utterance.lang = 'ar-SA';
+        utterance.rate = 0.85;
+
+        utterance.onend = () => resetSpeakButtonUI();
+        utterance.onerror = () => {
+          resetSpeakButtonUI();
+          showToast('Phone ka Media Volume aur Internet on karein');
+        };
+
+        window.speechSynthesis.speak(utterance);
+        setTimeout(() => resetSpeakButtonUI(), 2800);
+      } catch (err) {
+        resetSpeakButtonUI();
+        showToast('Audio play nahi ho saka');
+      }
+    }
+
+    function speakArabic(text, btnEl) {
+      try {
+        if (activeAudioPlayer) {
+          activeAudioPlayer.pause();
+          activeAudioPlayer.src = '';
+        }
+      } catch (e) {}
+
+      if ('speechSynthesis' in window) {
+        try { window.speechSynthesis.cancel(); } catch (e) {}
+      }
+      resetSpeakButtonUI();
+
+      const primaryArabic = text.split('/')[0].trim();
+
+      if (btnEl) {
+        activeSpeakBtn = btnEl;
+        btnEl.classList.add('speaking-pulse', 'text-amber-500');
+        const icon = btnEl.querySelector('i');
+        if (icon) {
+          icon.className = 'fa-solid fa-spinner fa-spin text-xs';
+        }
+      }
+
+      const encodedText = encodeURIComponent(primaryArabic);
+      const urls = [
+        `https://translate.googleapis.com/translate_tts?ie=UTF-8&client=gtx&tl=ar&q=${encodedText}`,
+        `https://dict.youdao.com/dictvoice?audio=${encodedText}&le=ar`,
+        `https://api.streamelements.com/kappa/v2/speech?voice=Zeina&text=${encodedText}`
+      ];
+
+      let attemptIndex = 0;
+
+      const tryNextSource = () => {
+        if (attemptIndex >= urls.length) {
+          if (activeSpeakBtn) {
+            const icon = activeSpeakBtn.querySelector('i');
+            if (icon) icon.className = 'fa-solid fa-volume-high text-xs';
+          }
+          playWebSpeechFallback(primaryArabic);
+          return;
+        }
+
+        const currentUrl = urls[attemptIndex++];
+        const audio = new Audio();
+        audio.referrerPolicy = 'no-referrer';
+        audio.preload = 'auto';
+        activeAudioPlayer = audio;
+        let failed = false;
+
+        const handleFail = () => {
+          if (failed) return;
+          failed = true;
+          tryNextSource();
+        };
+
+        audio.onplaying = () => {
+          if (activeSpeakBtn) {
+            const icon = activeSpeakBtn.querySelector('i');
+            if (icon) icon.className = 'fa-solid fa-volume-high text-xs';
+          }
+        };
+
+        audio.onended = () => resetSpeakButtonUI();
+        audio.onerror = handleFail;
+
+        audio.src = currentUrl;
+        const p = audio.play();
+        if (p !== undefined) {
+          p.catch(handleFail);
+        }
+      };
+
+      tryNextSource();
+    }
+
+    if ('speechSynthesis' in window) {
+      window.speechSynthesis.getVoices();
+      window.speechSynthesis.onvoiceschanged = () => window.speechSynthesis.getVoices();
+    }
+
+    // ================= WORD ACTIONS =================
+    function toggleLearned(id) {
+      const idx = state.learnedIds.indexOf(id);
+      if (idx === -1) {
+        state.learnedIds.push(id);
+        showToast('Marked as Learned! (+Quran %)');
+      } else {
+        state.learnedIds.splice(idx, 1);
+        showToast('Removed from Learned');
+      }
+      saveState();
+      renderCurrentTab();
+    }
+
+    function toggleBookmark(id) {
+      const idx = state.bookmarkedIds.indexOf(id);
+      if (idx === -1) {
+        state.bookmarkedIds.push(id);
+        showToast('Saved to Bookmarks');
+      } else {
+        state.bookmarkedIds.splice(idx, 1);
+        showToast('Removed from Bookmarks');
+      }
+      saveState();
+      renderCurrentTab();
+    }
+
+    // ================= NAVIGATION =================
+    function switchTab(tabName) {
+      state.activeTab = tabName;
+      document.querySelectorAll('.nav-btn').forEach(btn => {
+        btn.className = 'nav-btn flex flex-col items-center justify-center py-1.5 rounded-2xl transition active:scale-95 text-slate-500 dark:text-slate-400';
+      });
+      const activeBtn = document.getElementById(`nav-${tabName}`);
+      if (activeBtn) {
+        activeBtn.className = 'nav-btn flex flex-col items-center justify-center py-1.5 rounded-2xl transition active:scale-95 text-emerald-800 dark:text-amber-400 bg-emerald-50 dark:bg-emerald-950/70 shadow-sm';
+      }
+      if (tabName === 'quiz' && state.quizQuestions.length === 0) {
+        initQuiz();
+      }
+      renderCurrentTab();
+    }
+
+    function renderCurrentTab() {
+      const main = document.getElementById('appMain');
+      main.classList.remove('animate-tab-enter');
+      void main.offsetWidth;
+      main.classList.add('animate-tab-enter');
+
+      if (state.activeTab === 'dictionary') {
+        renderDictionary(main);
+      } else if (state.activeTab === 'namaz') {
+        renderNamazDuain(main);
+      } else if (state.activeTab === 'ambiya') {
+        renderAmbiya(main);
+      } else if (state.activeTab === 'flashcards') {
+        renderFlashcards(main);
+      } else if (state.activeTab === 'quiz') {
+        renderQuiz(main);
+      } else if (state.activeTab === 'progress') {
+        renderProgress(main);
+      }
+    }
+
+    // ================= TAB 1: DICTIONARY =================
+    function getFilteredWords() {
+      const q = state.searchQuery.trim().toLowerCase();
+      return QURAN_WORDS.filter(word => {
+        if (state.selectedLesson !== 'all' && word.lesson !== Number(state.selectedLesson)) {
+          return false;
+        }
+        if (state.filterStatus === 'learned' && !state.learnedIds.includes(word.id)) {
+          return false;
+        }
+        if (state.filterStatus === 'unlearned' && state.learnedIds.includes(word.id)) {
+          return false;
+        }
+        if (state.filterStatus === 'bookmarked' && !state.bookmarkedIds.includes(word.id)) {
+          return false;
+        }
+        if (q) {
+          const matchArabic = word.arabic.includes(q);
+          const matchTranslit = word.transliteration.toLowerCase().includes(q);
+          const matchUrdu = word.urdu.includes(q);
+          const matchRoman = word.romanUrdu.toLowerCase().includes(q);
+          const matchEng = word.english.toLowerCase().includes(q);
+          return matchArabic || matchTranslit || matchUrdu || matchRoman || matchEng;
+        }
+        return true;
+      });
+    }
+
+    function renderDictionary(container) {
+      const filtered = getFilteredWords();
+      const activeLessonObj = state.selectedLesson !== 'all'
+        ? LESSONS.find(l => l.id === Number(state.selectedLesson))
+        : null;
+      const todaysMsg = getTodaysMotivation();
+      const timesSummary = state.reminderTimes.map(formatTime12h).join(', ');
+
+      container.innerHTML = `
+        <!-- Daily Motivational Banner -->
+        <div onclick="openModal('reminderModal')" class="cursor-pointer mb-3 p-3.5 rounded-2xl bg-gradient-to-r from-amber-500/15 via-emerald-500/10 to-amber-500/15 dark:from-amber-900/25 dark:to-emerald-950/40 border border-amber-400/40 dark:border-amber-700/40 flex items-start justify-between gap-2.5 card-hover-lift">
+          <div class="flex items-start gap-2.5 flex-1 min-w-0">
+            <div class="w-8 h-8 rounded-xl bg-amber-500 text-emerald-950 flex items-center justify-center shrink-0 mt-0.5 shadow-sm">
+              <i class="fa-solid fa-bell text-xs"></i>
+            </div>
+            <div class="flex-1 min-w-0">
+              <div class="text-[10px] font-extrabold uppercase tracking-wider text-amber-800 dark:text-amber-300">
+                Aaj Ka Motivation • ${state.reminderEnabled ? `${timesSummary}${state.randomReminderEnabled ? ' + Random' : ''}` : 'Tap to set reminder'}
+              </div>
+              ${todaysMsg.arabic ? `
+                <div class="arabic-text text-xl sm:text-2xl font-bold text-emerald-950 dark:text-amber-300 text-right my-2" dir="rtl">
+                  ${todaysMsg.arabic}
+                </div>
+              ` : ''}
+              <div class="text-xs sm:text-sm font-bold text-slate-900 dark:text-white mt-0.5">
+                ${todaysMsg.title}
+              </div>
+              <p class="text-xs text-slate-600 dark:text-slate-300 mt-0.5 leading-relaxed">
+                ${todaysMsg.body}
+              </p>
+            </div>
+          </div>
+          <i class="fa-solid fa-chevron-right text-slate-400 text-xs mt-1 shrink-0"></i>
+        </div>
+
+        <!-- Search Input Bar -->
+        <div class="relative mb-3">
+          <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 text-sm"></i>
+          <input
+            id="searchInput"
+            type="text"
+            value="${state.searchQuery.replace(/"/g, '&quot;')}"
+            oninput="handleSearch(this.value)"
+            placeholder="Search Arabic, Urdu, Roman Urdu or English..."
+            class="w-full pl-10 pr-9 py-3 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-600 shadow-sm"
+          />
+          ${state.searchQuery ? `
+            <button onclick="handleSearch('')" class="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600">
+              <i class="fa-solid fa-circle-xmark"></i>
+            </button>
+          ` : ''}
+        </div>
+
+        <!-- Status Filter Chips -->
+        <div class="flex items-center gap-1.5 overflow-x-auto no-scrollbar pb-2 mb-1">
+          ${[
+            { id: 'all', label: `All (${QURAN_WORDS.length})` },
+            { id: 'unlearned', label: 'To Learn' },
+            { id: 'learned', label: `Learned (${state.learnedIds.length})` },
+            { id: 'bookmarked', label: `Saved (${state.bookmarkedIds.length})` }
+          ].map(chip => `
+            <button
+              onclick="setStatusFilter('${chip.id}')"
+              class="px-3 py-1.5 rounded-full text-xs font-semibold whitespace-nowrap transition ${
+                state.filterStatus === chip.id
+                  ? 'bg-emerald-800 text-white shadow-sm'
+                  : 'bg-white dark:bg-slate-900 text-slate-600 dark:text-slate-300 border border-slate-200 dark:border-slate-800'
+              }"
+            >
+              ${chip.label}
+            </button>
+          `).join('')}
+        </div>
+
+        <!-- Lesson Filter Pills -->
+        <div class="flex items-center gap-1.5 overflow-x-auto no-scrollbar pb-2.5 mb-2">
+          <button
+            onclick="setLessonFilter('all')"
+            class="px-3 py-1 rounded-full text-[11px] font-semibold whitespace-nowrap transition ${
+              state.selectedLesson === 'all'
+                ? 'bg-amber-500 text-emerald-950 font-bold'
+                : 'bg-emerald-900/10 dark:bg-slate-800 text-emerald-900 dark:text-slate-300'
+            }"
+          >
+            All Lessons
+          </button>
+          ${LESSONS.map(l => `
+            <button
+              onclick="setLessonFilter('${l.id}')"
+              class="px-3 py-1 rounded-full text-[11px] font-semibold whitespace-nowrap transition ${
+                String(state.selectedLesson) === String(l.id)
+                  ? 'bg-amber-500 text-emerald-950 font-bold'
+                  : 'bg-emerald-900/10 dark:bg-slate-800 text-emerald-900 dark:text-slate-300'
+              }"
+            >
+              L${l.id}: ${l.title.split(' ')[0]}
+            </button>
+          `).join('')}
+        </div>
+
+        <!-- Selected Lesson Heading Banner -->
+        ${activeLessonObj ? `
+          <div class="mb-3 p-3.5 rounded-2xl bg-gradient-to-r from-emerald-900 to-emerald-800 text-white shadow-sm border border-emerald-700/50 animate-card-enter">
+            <div class="flex items-center justify-between gap-2">
+              <span class="text-[10px] font-bold uppercase tracking-wider text-amber-300 bg-amber-400/15 px-2 py-0.5 rounded-full">
+                Lesson ${activeLessonObj.id} • ~${activeLessonObj.quranShare}% of Quran
+              </span>
+              <span class="text-[11px] text-emerald-200 font-medium">${activeLessonObj.subtitle}</span>
+            </div>
+            <h2 class="text-base font-extrabold mt-1.5 leading-snug">
+              ${activeLessonObj.title}
+            </h2>
+            <p class="text-xs text-emerald-100/90 mt-1 leading-relaxed">
+              ${activeLessonObj.desc}
+            </p>
+          </div>
+        ` : ''}
+
+        <!-- Results Count -->
+        <div class="flex items-center justify-between text-[11px] text-slate-500 dark:text-slate-400 mb-2.5 px-1">
+          <span>Showing <strong>${filtered.length}</strong> Quranic words</span>
+          <span>Tap <i class="fa-solid fa-volume-high text-emerald-700 dark:text-amber-400"></i> to listen</span>
+        </div>
+
+        <!-- Word Cards List -->
+        ${filtered.length === 0 ? `
+          <div class="text-center py-12 bg-white dark:bg-slate-900 rounded-3xl border border-slate-200 dark:border-slate-800">
+            <i class="fa-solid fa-magnifying-glass text-3xl text-slate-300 dark:text-slate-700 mb-2"></i>
+            <p class="text-sm font-semibold text-slate-600 dark:text-slate-300">Koi lafz nahi mila</p>
+            <p class="text-xs text-slate-400 mt-1">Search ya filter change karke dobara dekhein</p>
+          </div>
+        ` : `
+          <div class="space-y-3">
+            ${filtered.map((word, idx) => {
+              const isLearned = state.learnedIds.includes(word.id);
+              const isSaved = state.bookmarkedIds.includes(word.id);
+              const staggerDelay = Math.min(idx * 35, 350);
+              return `
+                <div style="animation-delay: ${staggerDelay}ms" class="animate-card-enter card-hover-lift bg-white dark:bg-slate-900 rounded-3xl p-4 shadow-sm border transition ${
+                  isLearned
+                    ? 'border-emerald-500/50 dark:border-emerald-600/50 bg-emerald-50/30 dark:bg-emerald-950/15'
+                    : 'border-slate-200/80 dark:border-slate-800'
+                }">
+                  <div class="flex items-start justify-between gap-3">
+                    <div class="flex-1 min-w-0">
+                      <div class="flex items-center gap-1.5 flex-wrap mb-1">
+                        <span class="text-[10px] font-bold px-2 py-0.5 rounded-md bg-emerald-100/80 dark:bg-emerald-900/50 text-emerald-800 dark:text-emerald-300">
+                          L${word.lesson} • ${word.category}
+                        </span>
+                        <span class="text-[10px] font-semibold text-slate-400">
+                          ${word.freq.toLocaleString()}× in Quran
+                        </span>
+                      </div>
+
+                      <div class="text-xs font-semibold text-amber-700 dark:text-amber-400">
+                        ${word.transliteration}
+                      </div>
+
+                      <div class="mt-1.5">
+                        <div class="text-base font-extrabold text-slate-900 dark:text-white leading-snug">
+                          ${word.english}
+                        </div>
+                        <div class="text-xs font-medium text-slate-600 dark:text-slate-300 mt-0.5">
+                          ${word.romanUrdu}
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="text-right shrink-0">
+                      <div class="arabic-text text-3xl sm:text-4xl font-bold text-emerald-950 dark:text-amber-300" dir="rtl">
+                        ${word.arabic}
+                      </div>
+                      <div class="urdu-text text-lg font-bold text-slate-800 dark:text-slate-200 mt-1" dir="rtl">
+                        ${word.urdu}
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="mt-3 p-3 rounded-2xl bg-slate-50 dark:bg-slate-800/70 border border-slate-200/70 dark:border-slate-700/60">
+                    <span class="text-[10px] font-extrabold uppercase tracking-wider text-emerald-800 dark:text-amber-400 block mb-1">
+                      Misaal (Quranic Example):
+                    </span>
+                    <p class="text-sm sm:text-base font-medium text-slate-800 dark:text-slate-100 leading-relaxed">
+                      ${word.example}
+                    </p>
+                  </div>
+
+                  <div class="mt-3 pt-2.5 border-t border-slate-100 dark:border-slate-800 flex items-center justify-between gap-2">
+                    <button
+                      onclick="speakArabic('${word.arabic}', this)"
+                      title="Listen Pronunciation"
+                      class="px-3 py-1.5 rounded-xl bg-emerald-100/80 dark:bg-emerald-900/50 text-emerald-900 dark:text-amber-300 hover:bg-emerald-200 text-xs font-bold flex items-center gap-1.5 transition active:scale-95"
+                    >
+                      <i class="fa-solid fa-volume-high text-xs"></i> Sunein
+                    </button>
+
+                    <div class="flex items-center gap-2">
+                      <button
+                        onclick="toggleBookmark(${word.id})"
+                        title="Save Word"
+                        class="w-8 h-8 rounded-xl flex items-center justify-center transition active:scale-90 ${
+                          isSaved
+                            ? 'bg-amber-100 dark:bg-amber-900/40 text-amber-600 dark:text-amber-400'
+                            : 'bg-slate-100 dark:bg-slate-800 text-slate-400 hover:text-slate-600'
+                        }"
+                      >
+                        <i class="fa-${isSaved ? 'solid' : 'regular'} fa-bookmark text-xs"></i>
+                      </button>
+
+                      <button
+                        onclick="toggleLearned(${word.id})"
+                        class="px-3 py-1.5 rounded-xl text-xs font-bold flex items-center gap-1.5 transition active:scale-95 ${
+                          isLearned
+                            ? 'bg-emerald-700 text-white shadow-sm'
+                            : 'bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:bg-emerald-100'
+                        }"
+                      >
+                        <i class="fa-solid ${isLearned ? 'fa-circle-check' : 'fa-check'}"></i>
+                        ${isLearned ? 'Learned' : 'Mark Learned'}
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              `;
+            }).join('')}
+          </div>
+        `}
+      `;
+    }
+
+    // ================= TAB 1A: NAMAZ MEIN PARHI JANE WALI MASNOON DUAIN =================
+    function selectNamazCat(cat) {
+      state.selectedNamazCat = cat;
+      renderNamazDuain(document.getElementById('appMain'));
+    }
+
+    function toggleNamazMemorized(id) {
+      const idx = state.memorizedNamazIds.indexOf(id);
+      if (idx === -1) {
+        state.memorizedNamazIds.push(id);
+        showToast('Dua Yaad Ho Gayi! MashaAllah');
+      } else {
+        state.memorizedNamazIds.splice(idx, 1);
+        showToast('Removed from Yaad Duain');
+      }
+      saveState();
+      renderNamazDuain(document.getElementById('appMain'));
+    }
+
+    function renderNamazDuain(container) {
+      const visibleDuain = state.selectedNamazCat === 'all'
+        ? NAMAZ_DUAIN
+        : NAMAZ_DUAIN.filter(d => d.category === state.selectedNamazCat);
+
+      container.innerHTML = `
+        <div class="bg-gradient-to-br from-emerald-900 to-emerald-950 text-white rounded-3xl p-4 mb-3 shadow-md border border-emerald-700/50 islamic-pattern">
+          <div class="flex items-center justify-between gap-2">
+            <div>
+              <span class="text-[10px] font-bold uppercase tracking-wider text-amber-300 bg-amber-400/15 px-2.5 py-0.5 rounded-full">
+                Khushu Aur Samajh Ke Sath Namaz
+              </span>
+              <h2 class="text-base sm:text-lg font-extrabold mt-1.5">
+                Namaz Ki Masnoon Duain
+              </h2>
+              <p class="text-xs text-emerald-100/90 mt-0.5">
+                Takbeer se Salam tak har rukan ki masnoon dua tarjume aur audio ke sath
+              </p>
+            </div>
+            <div class="text-right shrink-0 pl-2">
+              <div class="text-lg font-black text-amber-300">${state.memorizedNamazIds.length}/${NAMAZ_DUAIN.length}</div>
+              <div class="text-[10px] text-emerald-200">Yaad Hain</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="flex items-center gap-1.5 overflow-x-auto no-scrollbar pb-3 mb-2">
+          ${[
+            { id: 'all', label: `Tamam (${NAMAZ_DUAIN.length})` },
+            { id: 'qiyam', label: 'Sana / Qiyam' },
+            { id: 'ruku', label: 'Ruku & Qauma' },
+            { id: 'sajdah', label: 'Sajdah & Jalsa' },
+            { id: 'qaida', label: 'Attahiyyat & Durood' },
+            { id: 'baad_salam', label: 'Salam Ke Baad' }
+          ].map(tab => `
+            <button
+              onclick="selectNamazCat('${tab.id}')"
+              class="px-3 py-1.5 rounded-full text-xs font-semibold whitespace-nowrap transition ${
+                state.selectedNamazCat === tab.id
+                  ? 'bg-amber-500 text-emerald-950 font-bold shadow-sm'
+                  : 'bg-emerald-900/10 dark:bg-slate-800 text-emerald-900 dark:text-slate-300'
+              }"
+            >
+              ${tab.label}
+            </button>
+          `).join('')}
+        </div>
+
+        <div class="space-y-4">
+          ${visibleDuain.map((dua, idx) => {
+            const isMemorized = state.memorizedNamazIds.includes(dua.id);
+            const staggerDelay = Math.min(idx * 50, 350);
+            return `
+              <article style="animation-delay: ${staggerDelay}ms" class="animate-card-enter card-hover-lift bg-white dark:bg-slate-900 rounded-3xl p-4 sm:p-5 shadow-sm border ${
+                isMemorized
+                  ? 'border-emerald-500/60 dark:border-emerald-600/50 bg-emerald-50/20 dark:bg-emerald-950/15'
+                  : 'border-slate-200/80 dark:border-slate-800'
+              }">
+                <div class="flex items-start justify-between gap-2 pb-2.5 border-b border-slate-100 dark:border-slate-800">
+                  <div>
+                    <span class="text-[10px] font-extrabold uppercase tracking-wider text-emerald-800 dark:text-amber-400 bg-emerald-100/80 dark:bg-emerald-900/50 px-2.5 py-0.5 rounded-full">
+                      ${dua.step}
+                    </span>
+                    <h3 class="text-base font-extrabold text-slate-900 dark:text-white mt-1.5 leading-snug">
+                      ${dua.title}
+                    </h3>
+                    <p class="text-[11px] text-slate-500 dark:text-slate-400 mt-0.5">
+                      <i class="fa-regular fa-clock mr-1 text-amber-600 dark:text-amber-400"></i>${dua.when}
+                    </p>
+                  </div>
+
+                  <button
+                    onclick="speakArabic('${dua.arabic.replace(/'/g, "\\'")}', this)"
+                    title="Listen Dua"
+                    class="px-3 py-1.5 rounded-xl bg-emerald-800 hover:bg-emerald-700 text-white text-xs font-bold flex items-center gap-1.5 shrink-0 active:scale-95 transition shadow-sm"
+                  >
+                    <i class="fa-solid fa-volume-high text-xs"></i> Sunein
+                  </button>
+                </div>
+
+                <div class="my-4 p-4 rounded-2xl bg-gradient-to-br from-emerald-50/90 to-amber-50/50 dark:from-emerald-950/50 dark:to-slate-800/70 border border-emerald-200/70 dark:border-emerald-800/40">
+                  <p class="arabic-text text-2xl sm:text-3xl font-bold text-emerald-950 dark:text-amber-300 text-right" dir="rtl">
+                    ${dua.arabic}
+                  </p>
+                  <p class="text-xs font-semibold text-amber-800 dark:text-amber-400/90 mt-3 italic">
+                    ${dua.transliteration}
+                  </p>
+                </div>
+
+                <div class="space-y-2.5">
+                  <div class="p-3.5 rounded-2xl bg-slate-50 dark:bg-slate-800/70 border border-slate-200/60 dark:border-slate-700/60">
+                    <div class="urdu-text text-base sm:text-lg font-bold text-slate-900 dark:text-slate-100 text-right" dir="rtl">
+                      ${dua.urdu}
+                    </div>
+                  </div>
+
+                  <div class="px-1 space-y-1.5">
+                    <p class="text-xs sm:text-sm font-medium text-slate-700 dark:text-slate-200 leading-relaxed">
+                      <strong class="text-emerald-800 dark:text-amber-400">Roman Urdu:</strong> ${dua.romanUrdu}
+                    </p>
+                    <p class="text-xs text-slate-600 dark:text-slate-400 leading-relaxed">
+                      <strong class="text-slate-800 dark:text-slate-300">English:</strong> ${dua.english}
+                    </p>
+                  </div>
+                </div>
+
+                <div class="mt-3.5 pt-3 border-t border-slate-100 dark:border-slate-800 flex justify-end">
+                  <button
+                    onclick="toggleNamazMemorized('${dua.id}')"
+                    class="px-3.5 py-2 rounded-xl text-xs font-bold flex items-center gap-1.5 transition active:scale-95 ${
+                      isMemorized
+                        ? 'bg-emerald-700 text-white shadow-sm'
+                        : 'bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-200 hover:bg-emerald-100'
+                    }"
+                  >
+                    <i class="fa-solid ${isMemorized ? 'fa-circle-check' : 'fa-check'}"></i>
+                    ${isMemorized ? 'Yaad Ho Gayi' : 'Mark Yaad (Memorized)'}
+                  </button>
+                </div>
+              </article>
+            `;
+          }).join('')}
+        </div>
+      `;
+    }
+
+    function handleSearch(val) {
+      state.searchQuery = val;
+      const main = document.getElementById('appMain');
+      renderDictionary(main);
+      const input = document.getElementById('searchInput');
+      if (input) {
+        input.focus();
+        input.setSelectionRange(val.length, val.length);
+      }
+    }
+
+    function setStatusFilter(status) {
+      state.filterStatus = status;
+      renderDictionary(document.getElementById('appMain'));
+    }
+
+    function setLessonFilter(lessonId) {
+      state.selectedLesson = lessonId;
+      renderDictionary(document.getElementById('appMain'));
+    }
+
+    // ================= TAB 1B: AMBIYA KARAM KE QISSAY AUR AMLI IMPLEMENTATION =================
+    function selectNabiFilter(nabiId) {
+      state.selectedNabiId = nabiId;
+      renderAmbiya(document.getElementById('appMain'));
+    }
+
+    function toggleAmbiyaReflected(id) {
+      const idx = state.reflectedAmbiyaIds.indexOf(id);
+      if (idx === -1) {
+        state.reflectedAmbiyaIds.push(id);
+        showToast('Sabaq Parha & Amal Ki Niyyat Ki!');
+      } else {
+        state.reflectedAmbiyaIds.splice(idx, 1);
+        showToast('Removed from Completed Stories');
+      }
+      saveState();
+      renderAmbiya(document.getElementById('appMain'));
+    }
+
+    function renderAmbiya(container) {
+      const visibleStories = state.selectedNabiId === 'all'
+        ? AMBIYA_STORIES
+        : AMBIYA_STORIES.filter(s => s.id === state.selectedNabiId);
+
+      container.innerHTML = `
+        <div class="bg-gradient-to-br from-emerald-900 to-emerald-950 text-white rounded-3xl p-4 mb-3 shadow-md border border-emerald-700/50 islamic-pattern">
+          <div class="flex items-center justify-between gap-2">
+            <div>
+              <span class="text-[10px] font-bold uppercase tracking-wider text-amber-300 bg-amber-400/15 px-2.5 py-0.5 rounded-full">
+                Quranic Stories & Practical Life
+              </span>
+              <h2 class="text-base sm:text-lg font-extrabold mt-1.5">
+                Ambiya Karam (AS) Ke Qissay
+              </h2>
+              <p class="text-xs text-emerald-100/90 mt-0.5">
+                Har Nabi ke waqia se aaj ki zindagi mein amli implementation aur masnoon dua
+              </p>
+            </div>
+            <div class="text-right shrink-0 pl-2">
+              <div class="text-lg font-black text-amber-300">${state.reflectedAmbiyaIds.length}/${AMBIYA_STORIES.length}</div>
+              <div class="text-[10px] text-emerald-200">Parh Liye</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="flex items-center gap-1.5 overflow-x-auto no-scrollbar pb-3 mb-2">
+          <button
+            onclick="selectNabiFilter('all')"
+            class="px-3 py-1.5 rounded-full text-xs font-semibold whitespace-nowrap transition ${
+              state.selectedNabiId === 'all'
+                ? 'bg-amber-500 text-emerald-950 font-bold shadow-sm'
+                : 'bg-emerald-900/10 dark:bg-slate-800 text-emerald-900 dark:text-slate-300'
+            }"
+          >
+            Tamam (${AMBIYA_STORIES.length})
+          </button>
+          ${AMBIYA_STORIES.map(s => `
+            <button
+              onclick="selectNabiFilter('${s.id}')"
+              class="px-3 py-1.5 rounded-full text-xs font-semibold whitespace-nowrap transition ${
+                state.selectedNabiId === s.id
+                  ? 'bg-amber-500 text-emerald-950 font-bold shadow-sm'
+                  : 'bg-emerald-900/10 dark:bg-slate-800 text-emerald-900 dark:text-slate-300'
+              }"
+            >
+              ${s.name.replace('Hazrat ', '')}
+            </button>
+          `).join('')}
+        </div>
+
+        <div class="space-y-4">
+          ${visibleStories.map((story, idx) => {
+            const isReflected = state.reflectedAmbiyaIds.includes(story.id);
+            const staggerDelay = Math.min(idx * 50, 350);
+            return `
+              <article style="animation-delay: ${staggerDelay}ms" class="animate-card-enter card-hover-lift bg-white dark:bg-slate-900 rounded-3xl p-4 sm:p-5 shadow-sm border ${
+                isReflected
+                  ? 'border-emerald-500/60 dark:border-emerald-600/50 bg-emerald-50/20 dark:bg-emerald-950/15'
+                  : 'border-slate-200/80 dark:border-slate-800'
+              }">
+                <div class="flex items-start justify-between gap-2 pb-3 border-b border-slate-100 dark:border-slate-800">
+                  <div>
+                    <span class="text-[10px] font-extrabold uppercase tracking-wider text-emerald-800 dark:text-amber-400 bg-emerald-100/80 dark:bg-emerald-900/50 px-2.5 py-0.5 rounded-full">
+                      ${story.themeTag}
+                    </span>
+                    <h3 class="text-base font-extrabold text-slate-900 dark:text-white mt-1.5">
+                      ${story.name} — ${story.title}
+                    </h3>
+                    <p class="text-[11px] text-slate-500 dark:text-slate-400 mt-0.5">
+                      ${story.surahRef}
+                    </p>
+                  </div>
+                  <div class="arabic-text text-lg font-bold text-emerald-900 dark:text-amber-300 text-right shrink-0" dir="rtl">
+                    ${story.arabicName}
+                  </div>
+                </div>
+
+                <div class="mt-3">
+                  <div class="text-[11px] font-extrabold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-1">
+                    <i class="fa-solid fa-book-open text-emerald-700 dark:text-amber-400 mr-1"></i> Quranic Qissa:
+                  </div>
+                  <p class="text-xs sm:text-sm text-slate-700 dark:text-slate-200 leading-relaxed">
+                    ${story.qissa}
+                  </p>
+                </div>
+
+                <div class="mt-3.5 p-3.5 rounded-2xl bg-emerald-50/80 dark:bg-emerald-950/40 border border-emerald-200/70 dark:border-emerald-800/40">
+                  <div class="text-[11px] font-extrabold uppercase tracking-wider text-emerald-900 dark:text-amber-300 mb-2">
+                    <i class="fa-solid fa-person-walking-arrow-right mr-1"></i> Aaj Ki Zindagi Mein Amli Implementation:
+                  </div>
+                  <ul class="space-y-1.5">
+                    ${story.implementation.map(point => `
+                      <li class="text-xs sm:text-sm text-slate-800 dark:text-slate-200 flex items-start gap-2 leading-relaxed">
+                        <i class="fa-solid fa-check-circle text-emerald-600 dark:text-amber-400 mt-1 text-xs shrink-0"></i>
+                        <span>${point}</span>
+                      </li>
+                    `).join('')}
+                  </ul>
+                </div>
+
+                <div class="mt-3.5 p-3.5 rounded-2xl bg-slate-50 dark:bg-slate-800/70 border border-slate-200/70 dark:border-slate-700/60">
+                  <div class="flex items-center justify-between mb-1.5">
+                    <span class="text-[10px] font-extrabold uppercase tracking-wider text-amber-800 dark:text-amber-300">
+                      Mashhoor Quranic Dua:
+                    </span>
+                    <button
+                      onclick="speakArabic('${story.duaArabic.replace(/'/g, "\\'")}', this)"
+                      class="px-2.5 py-1 rounded-xl bg-emerald-800 hover:bg-emerald-700 text-white text-[11px] font-bold flex items-center gap-1 active:scale-95 transition"
+                    >
+                      <i class="fa-solid fa-volume-high text-[10px]"></i> Sunein
+                    </button>
+                  </div>
+                  <p class="arabic-text text-xl sm:text-2xl font-bold text-emerald-950 dark:text-amber-300 text-right my-2" dir="rtl">
+                    ${story.duaArabic}
+                  </p>
+                  <p class="text-xs text-slate-600 dark:text-slate-300 mt-2 leading-relaxed">
+                    ${story.duaTranslation}
+                  </p>
+                </div>
+
+                <div class="mt-3.5 pt-3 border-t border-slate-100 dark:border-slate-800 flex items-center justify-between gap-2 flex-wrap">
+                  <div class="flex items-center gap-1.5 flex-wrap">
+                    ${story.keyWords.map(kw => `
+                      <span class="text-[10px] font-bold px-2 py-0.5 rounded-md bg-amber-100/80 dark:bg-amber-900/30 text-amber-900 dark:text-amber-300">
+                        ${kw}
+                      </span>
+                    `).join('')}
+                  </div>
+
+                  <button
+                    onclick="toggleAmbiyaReflected('${story.id}')"
+                    class="px-3 py-1.5 rounded-xl text-xs font-bold flex items-center gap-1.5 transition active:scale-95 ${
+                      isReflected
+                        ? 'bg-emerald-700 text-white shadow-sm'
+                        : 'bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-200 hover:bg-emerald-100'
+                    }"
+                  >
+                    <i class="fa-solid ${isReflected ? 'fa-circle-check' : 'fa-check'}"></i>
+                    ${isReflected ? 'Sabaq Yaad' : 'Mark Read'}
+                  </button>
+                </div>
+              </article>
+            `;
+          }).join('')}
+        </div>
+      `;
+    }
+
+    // ================= TAB 2: FLASHCARDS =================
+    function getFlashcardDeck() {
+      if (state.fcLesson === 'all') return QURAN_WORDS;
+      if (state.fcLesson === 'unlearned') {
+        const unlearned = QURAN_WORDS.filter(w => !state.learnedIds.includes(w.id));
+        return unlearned.length > 0 ? unlearned : QURAN_WORDS;
+      }
+      if (state.fcLesson === 'bookmarked') {
+        const saved = QURAN_WORDS.filter(w => state.bookmarkedIds.includes(w.id));
+        return saved.length > 0 ? saved : QURAN_WORDS;
+      }
+      return QURAN_WORDS.filter(w => w.lesson === Number(state.fcLesson));
+    }
+
+    function renderFlashcards(container) {
+      const deck = getFlashcardDeck();
+      if (state.fcIndex >= deck.length) state.fcIndex = 0;
+      const card = deck[state.fcIndex];
+      const isLearned = state.learnedIds.includes(card.id);
+
+      container.innerHTML = `
+        <div class="flex flex-col h-full">
+          <div class="flex items-center justify-between gap-2 mb-4">
+            <select
+              onchange="changeFlashcardDeck(this.value)"
+              class="flex-1 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl px-3.5 py-2.5 text-xs font-bold focus:outline-none focus:ring-2 focus:ring-emerald-600"
+            >
+              <option value="all" ${state.fcLesson === 'all' ? 'selected' : ''}>All Core Words (${QURAN_WORDS.length})</option>
+              <option value="unlearned" ${state.fcLesson === 'unlearned' ? 'selected' : ''}>Unlearned Words Only</option>
+              <option value="bookmarked" ${state.fcLesson === 'bookmarked' ? 'selected' : ''}>Bookmarked Words (${state.bookmarkedIds.length})</option>
+              ${LESSONS.map(l => `
+                <option value="${l.id}" ${String(state.fcLesson) === String(l.id) ? 'selected' : ''}>
+                  Lesson ${l.id}: ${l.title}
+                </option>
+              `).join('')}
+            </select>
+
+            <span class="px-3 py-2.5 rounded-2xl bg-emerald-900/10 dark:bg-slate-800 text-xs font-extrabold text-emerald-900 dark:text-amber-400">
+              ${state.fcIndex + 1} / ${deck.length}
+            </span>
+          </div>
+
+          <div class="perspective-1000 w-full my-1">
+            <div
+              onclick="flipFlashcard()"
+              class="relative w-full min-h-[330px] cursor-pointer transform-style-3d ${state.fcFlipped ? 'rotate-y-180' : ''}"
+            >
+              <!-- FRONT OF CARD -->
+              <div class="backface-hidden absolute inset-0 bg-gradient-to-br from-white via-cream to-emerald-50/60 dark:from-slate-900 dark:via-slate-900 dark:to-emerald-950/40 rounded-3xl p-6 shadow-xl border-2 border-emerald-800/15 dark:border-slate-800 flex flex-col justify-between items-center text-center">
+                <div class="w-full flex justify-between items-center">
+                  <span class="text-[11px] font-bold px-2.5 py-1 rounded-full bg-emerald-100 dark:bg-emerald-900/60 text-emerald-800 dark:text-emerald-300">
+                    Lesson ${card.lesson} • ${card.category}
+                  </span>
+                  <button
+                    onclick="event.stopPropagation(); speakArabic('${card.arabic}', this)"
+                    class="w-10 h-10 rounded-2xl bg-emerald-800 text-white flex items-center justify-center shadow-md active:scale-90"
+                  >
+                    <i class="fa-solid fa-volume-high"></i>
+                  </button>
+                </div>
+
+                <div class="my-auto py-4">
+                  <div class="arabic-text text-6xl font-bold text-emerald-950 dark:text-amber-300 mb-3" dir="rtl">
+                    ${card.arabic}
+                  </div>
+                  <div class="inline-flex items-center gap-1.5 text-xs font-semibold text-amber-700 dark:text-amber-300 bg-amber-100/80 dark:bg-amber-900/30 px-3 py-1 rounded-full">
+                    <i class="fa-solid fa-repeat"></i> Appears ${card.freq.toLocaleString()} times in Quran
+                  </div>
+                </div>
+
+                <div class="text-xs font-medium text-slate-400 flex items-center gap-1.5">
+                  <i class="fa-solid fa-hand-pointer text-emerald-600 dark:text-amber-400"></i>
+                  Tap card to reveal Urdu & English meaning
+                </div>
+              </div>
+
+              <!-- BACK OF CARD -->
+              <div class="backface-hidden rotate-y-180 absolute inset-0 bg-gradient-to-br from-emerald-900 to-emerald-950 text-white rounded-3xl p-6 shadow-xl border-2 border-amber-400/30 flex flex-col justify-between text-center islamic-pattern">
+                <div class="flex justify-between items-center">
+                  <span class="text-xs font-bold text-amber-300">${card.transliteration}</span>
+                  <span class="arabic-text text-2xl font-bold text-white" dir="rtl">${card.arabic}</span>
+                </div>
+
+                <div class="my-auto space-y-2">
+                  <div class="urdu-text text-3xl font-bold text-amber-300" dir="rtl">
+                    ${card.urdu}
+                  </div>
+                  <div class="text-sm font-medium text-emerald-200">
+                    (${card.romanUrdu})
+                  </div>
+                  <div class="w-12 h-0.5 bg-white/20 mx-auto my-2"></div>
+                  <div class="text-xl font-extrabold text-white">
+                    ${card.english}
+                  </div>
+                </div>
+
+                <div class="bg-black/30 rounded-2xl p-3 text-xs text-emerald-100 border border-white/10">
+                  ${card.example}
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="grid grid-cols-3 gap-2.5 mt-5">
+            <button
+              onclick="prevFlashcard()"
+              class="py-3 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 font-bold text-xs flex items-center justify-center gap-1.5 shadow-sm active:scale-95"
+            >
+              <i class="fa-solid fa-arrow-left"></i> Prev
+            </button>
+
+            <button
+              onclick="markFlashcardLearned(${card.id})"
+              class="py-3 rounded-2xl font-bold text-xs flex items-center justify-center gap-1.5 shadow-md active:scale-95 transition ${
+                isLearned
+                  ? 'bg-emerald-700 text-white'
+                  : 'bg-amber-500 text-emerald-950'
+              }"
+            >
+              <i class="fa-solid ${isLearned ? 'fa-circle-check' : 'fa-check'}"></i>
+              ${isLearned ? 'Mastered' : 'I Know This'}
+            </button>
+
+            <button
+              onclick="nextFlashcard()"
+              class="py-3 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 font-bold text-xs flex items-center justify-center gap-1.5 shadow-sm active:scale-95"
+            >
+              Next <i class="fa-solid fa-arrow-right"></i>
+            </button>
+          </div>
+        </div>
+      `;
+    }
+
+    function changeFlashcardDeck(val) {
+      state.fcLesson = val;
+      state.fcIndex = 0;
+      state.fcFlipped = false;
+      renderFlashcards(document.getElementById('appMain'));
+    }
+
+    function flipFlashcard() {
+      state.fcFlipped = !state.fcFlipped;
+      renderFlashcards(document.getElementById('appMain'));
+    }
+
+    function nextFlashcard() {
+      const deck = getFlashcardDeck();
+      state.fcIndex = (state.fcIndex + 1) % deck.length;
+      state.fcFlipped = false;
+      renderFlashcards(document.getElementById('appMain'));
+    }
+
+    function prevFlashcard() {
+      const deck = getFlashcardDeck();
+      state.fcIndex = (state.fcIndex - 1 + deck.length) % deck.length;
+      state.fcFlipped = false;
+      renderFlashcards(document.getElementById('appMain'));
+    }
+
+    function markFlashcardLearned(id) {
+      if (!state.learnedIds.includes(id)) {
+        state.learnedIds.push(id);
+        saveState();
+        showToast('Word Mastered! Moving to next...');
+      }
+      nextFlashcard();
+    }
+
+    // ================= TAB 3: QUIZ =================
+    function shuffleArray(arr) {
+      const copy = [...arr];
+      for (let i = copy.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [copy[i], copy[j]] = [copy[j], copy[i]];
+      }
+      return copy;
+    }
+
+    function initQuiz(customWordPool = null) {
+      const pool = customWordPool && customWordPool.length >= 4 ? customWordPool : QURAN_WORDS;
+      const selected = shuffleArray(pool).slice(0, 10);
+
+      state.quizQuestions = selected.map(target => {
+        const distractors = shuffleArray(QURAN_WORDS.filter(w => w.id !== target.id)).slice(0, 3);
+        const options = shuffleArray([target, ...distractors]);
+        return { target, options };
+      });
+
+      state.quizCurrent = 0;
+      state.quizScore = 0;
+      state.quizStreak = 0;
+      state.quizAnswered = false;
+      state.quizSelectedOption = null;
+      state.quizFinished = false;
+      state.quizMissedIds = [];
+    }
+
+    function renderQuiz(container) {
+      if (state.quizFinished) {
+        const pct = Math.round((state.quizScore / state.quizQuestions.length) * 100);
+        container.innerHTML = `
+          <div class="bg-white dark:bg-slate-900 rounded-3xl p-6 text-center shadow-lg border border-slate-200 dark:border-slate-800">
+            <div class="w-20 h-20 rounded-full bg-amber-100 dark:bg-amber-900/40 text-amber-500 flex items-center justify-center mx-auto mb-4 text-4xl shadow-inner">
+              <i class="fa-solid ${pct >= 70 ? 'fa-trophy' : 'fa-medal'}"></i>
+            </div>
+            <h2 class="text-xl font-extrabold">Quiz Completed!</h2>
+            <p class="text-xs text-slate-500 dark:text-slate-400 mt-1">Aap ka Imtihan Result</p>
+
+            <div class="my-5 p-4 rounded-2xl bg-emerald-50 dark:bg-emerald-950/50 border border-emerald-200/70 dark:border-emerald-800/40">
+              <div class="text-3xl font-black text-emerald-800 dark:text-amber-400">
+                ${state.quizScore} / ${state.quizQuestions.length}
+              </div>
+              <div class="text-xs font-semibold text-emerald-700 dark:text-emerald-300 mt-1">
+                Accuracy: ${pct}% • Best Score: ${state.quizHighScore}/10
+              </div>
+            </div>
+
+            <div class="space-y-2.5">
+              <button
+                onclick="restartQuiz(false)"
+                class="w-full py-3.5 rounded-2xl bg-emerald-800 hover:bg-emerald-900 text-white font-bold text-sm shadow-md active:scale-95 transition"
+              >
+                <i class="fa-solid fa-rotate-right mr-1.5"></i> Start New 10-Word Quiz
+              </button>
+
+              ${state.quizMissedIds.length >= 4 ? `
+                <button
+                  onclick="restartQuiz(true)"
+                  class="w-full py-3 rounded-2xl bg-amber-500 text-emerald-950 font-bold text-xs active:scale-95 transition"
+                >
+                  Practice Missed Words (${state.quizMissedIds.length})
+                </button>
+              ` : ''}
+            </div>
+          </div>
+        `;
+        return;
+      }
+
+      const qObj = state.quizQuestions[state.quizCurrent];
+      const target = qObj.target;
+
+      container.innerHTML = `
+        <div class="flex items-center justify-between mb-3 px-1">
+          <span class="text-xs font-bold text-slate-600 dark:text-slate-300">
+            Question <span class="text-emerald-700 dark:text-amber-400">${state.quizCurrent + 1}</span> of ${state.quizQuestions.length}
+          </span>
+          <div class="flex items-center gap-2">
+            <span class="text-xs font-bold px-2.5 py-1 rounded-full bg-amber-100 dark:bg-amber-900/40 text-amber-800 dark:text-amber-300">
+              <i class="fa-solid fa-fire mr-1"></i>Streak: ${state.quizStreak}
+            </span>
+            <span class="text-xs font-bold px-2.5 py-1 rounded-full bg-emerald-100 dark:bg-emerald-900/50 text-emerald-800 dark:text-emerald-300">
+              Score: ${state.quizScore}
+            </span>
+          </div>
+        </div>
+
+        <div class="bg-gradient-to-br from-emerald-900 to-emerald-950 text-white rounded-3xl p-6 text-center shadow-lg mb-4 islamic-pattern relative">
+          <button
+            onclick="speakArabic('${target.arabic}', this)"
+            class="absolute top-3.5 right-3.5 w-9 h-9 rounded-xl bg-white/15 hover:bg-white/25 flex items-center justify-center text-amber-300"
+          >
+            <i class="fa-solid fa-volume-high text-xs"></i>
+          </button>
+          <p class="text-[11px] uppercase tracking-wider text-emerald-200 font-semibold mb-3 pr-8">
+            Is Quranic lafz ka sahi matlab chunein:
+          </p>
+          <div class="arabic-text text-5xl font-bold text-amber-300 my-3" dir="rtl">
+            ${target.arabic}
+          </div>
+          <div class="text-xs text-emerald-200/90 font-medium mt-2">
+            (${target.transliteration})
+          </div>
+        </div>
+
+        <div class="space-y-2.5">
+          ${qObj.options.map((opt, idx) => {
+            let btnStyle = 'bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-800 hover:border-emerald-500';
+            let badgeIcon = '';
+            const staggerDelay = idx * 45;
+
+            if (state.quizAnswered) {
+              if (opt.id === target.id) {
+                btnStyle = 'bg-emerald-600 text-white border-emerald-600 shadow-md scale-[1.01]';
+                badgeIcon = '<i class="fa-solid fa-circle-check text-white text-base"></i>';
+              } else if (opt.id === state.quizSelectedOption) {
+                btnStyle = 'bg-rose-600 text-white border-rose-600';
+                badgeIcon = '<i class="fa-solid fa-circle-xmark text-white text-base"></i>';
+              } else {
+                btnStyle = 'bg-white/50 dark:bg-slate-900/50 border-slate-200 dark:border-slate-800 opacity-60';
+              }
+            }
+
+            return `
+              <button
+                style="animation-delay: ${staggerDelay}ms"
+                onclick="selectQuizOption(${opt.id})"
+                ${state.quizAnswered ? 'disabled' : ''}
+                class="animate-card-enter card-hover-lift w-full p-3.5 rounded-2xl border-2 text-left transition-all duration-200 flex items-center justify-between gap-3 ${btnStyle}"
+              >
+                <div>
+                  <div class="text-sm font-bold">${opt.english}</div>
+                  <div class="text-xs opacity-85 mt-0.5">${opt.romanUrdu}</div>
+                </div>
+                <div class="flex items-center gap-2.5">
+                  <span class="urdu-text text-base font-bold" dir="rtl">${opt.urdu}</span>
+                  ${badgeIcon}
+                </div>
+              </button>
+            `;
+          }).join('')}
+        </div>
+
+        ${state.quizAnswered ? `
+          <button
+            onclick="nextQuizQuestion()"
+            class="w-full mt-4 py-3.5 rounded-2xl bg-amber-500 hover:bg-amber-400 text-emerald-950 font-extrabold text-sm shadow-lg active:scale-95 transition flex items-center justify-center gap-2"
+          >
+            ${state.quizCurrent + 1 < state.quizQuestions.length ? 'Next Question' : 'See Final Result'}
+            <i class="fa-solid fa-arrow-right"></i>
+          </button>
+        ` : ''}
+      `;
+    }
+
+    function selectQuizOption(optionId) {
+      if (state.quizAnswered) return;
+      const qObj = state.quizQuestions[state.quizCurrent];
+      state.quizAnswered = true;
+      state.quizSelectedOption = optionId;
+
+      if (optionId === qObj.target.id) {
+        state.quizScore++;
+        state.quizStreak++;
+        if (!state.learnedIds.includes(qObj.target.id)) {
+          state.learnedIds.push(qObj.target.id);
+          saveState();
+        }
+      } else {
+        state.quizStreak = 0;
+        state.quizMissedIds.push(qObj.target.id);
+      }
+      renderQuiz(document.getElementById('appMain'));
+    }
+
+    function nextQuizQuestion() {
+      if (state.quizCurrent + 1 < state.quizQuestions.length) {
+        state.quizCurrent++;
+        state.quizAnswered = false;
+        state.quizSelectedOption = null;
+      } else {
+        state.quizFinished = true;
+        if (state.quizScore > state.quizHighScore) {
+          state.quizHighScore = state.quizScore;
+          saveState();
+        }
+      }
+      renderQuiz(document.getElementById('appMain'));
+    }
+
+    function restartQuiz(missedOnly) {
+      if (missedOnly) {
+        const missedPool = QURAN_WORDS.filter(w => state.quizMissedIds.includes(w.id));
+        initQuiz(missedPool);
+      } else {
+        initQuiz();
+      }
+      renderQuiz(document.getElementById('appMain'));
+    }
+
+    // ================= TAB 4: PROGRESS =================
+    function renderProgress(container) {
+      const quranPct = calculateQuranComprehension();
+
+      container.innerHTML = `
+        <div class="grid grid-cols-3 gap-2.5 mb-4">
+          <div class="bg-white dark:bg-slate-900 p-3.5 rounded-2xl border border-slate-200 dark:border-slate-800 text-center shadow-sm">
+            <div class="text-xl font-black text-emerald-700 dark:text-emerald-400">${state.learnedIds.length}</div>
+            <div class="text-[10px] font-semibold text-slate-500 mt-0.5">Words Learned</div>
+          </div>
+          <div class="bg-white dark:bg-slate-900 p-3.5 rounded-2xl border border-slate-200 dark:border-slate-800 text-center shadow-sm">
+            <div class="text-xl font-black text-amber-600 dark:text-amber-400">${quranPct}%</div>
+            <div class="text-[10px] font-semibold text-slate-500 mt-0.5">Quran Unlocked</div>
+          </div>
+          <div class="bg-white dark:bg-slate-900 p-3.5 rounded-2xl border border-slate-200 dark:border-slate-800 text-center shadow-sm">
+            <div class="text-xl font-black text-indigo-600 dark:text-indigo-400">${state.quizHighScore}/10</div>
+            <div class="text-[10px] font-semibold text-slate-500 mt-0.5">Best Quiz</div>
+          </div>
+        </div>
+
+        <div class="flex items-center justify-between mb-2.5 px-1">
+          <h2 class="text-sm font-extrabold">75% Quran Learning Roadmap</h2>
+          <span class="text-[11px] text-slate-500">7 Core Modules</span>
+        </div>
+
+        <div class="space-y-3 mb-6">
+          ${LESSONS.map(lesson => {
+            const words = QURAN_WORDS.filter(w => w.lesson === lesson.id);
+            const learned = words.filter(w => state.learnedIds.includes(w.id)).length;
+            const pct = Math.round((learned / words.length) * 100);
+
+            return `
+              <div class="bg-white dark:bg-slate-900 rounded-3xl p-4 border border-slate-200 dark:border-slate-800 shadow-sm">
+                <div class="flex items-start justify-between gap-3">
+                  <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 rounded-2xl bg-emerald-100 dark:bg-emerald-900/50 text-emerald-800 dark:text-amber-300 flex items-center justify-center shrink-0">
+                      <i class="fa-solid ${lesson.icon}"></i>
+                    </div>
+                    <div>
+                      <div class="text-xs font-extrabold text-slate-900 dark:text-white">
+                        Lesson ${lesson.id}: ${lesson.title}
+                      </div>
+                      <div class="text-[11px] text-emerald-700 dark:text-emerald-400 font-medium">
+                        ${lesson.subtitle} • Covers ~${lesson.quranShare}% of Quran
+                      </div>
+                    </div>
+                  </div>
+                  <span class="text-xs font-extrabold text-amber-600 dark:text-amber-400">
+                    ${learned}/${words.length}
+                  </span>
+                </div>
+
+                <p class="text-[11px] text-slate-500 dark:text-slate-400 mt-2">
+                  ${lesson.desc}
+                </p>
+
+                <div class="w-full h-2 bg-slate-100 dark:bg-slate-800 rounded-full overflow-hidden my-2.5">
+                  <div class="h-full bg-emerald-600 dark:bg-amber-500 rounded-full transition-all duration-500" style="width: ${pct}%"></div>
+                </div>
+
+                <div class="flex gap-2">
+                  <button
+                    onclick="openLessonInDictionary(${lesson.id})"
+                    class="flex-1 py-2 rounded-xl bg-emerald-50 dark:bg-emerald-950/60 text-emerald-800 dark:text-emerald-300 text-xs font-bold hover:bg-emerald-100 transition"
+                  >
+                    Study Words
+                  </button>
+                  <button
+                    onclick="openLessonInFlashcards(${lesson.id})"
+                    class="flex-1 py-2 rounded-xl bg-amber-500/15 text-amber-800 dark:text-amber-300 text-xs font-bold hover:bg-amber-500/25 transition"
+                  >
+                    Practice Cards
+                  </button>
+                </div>
+              </div>
+            `;
+          }).join('')}
+        </div>
+
+        <div class="text-center pb-4">
+          <button onclick="resetAllProgress()" class="text-xs text-rose-600 dark:text-rose-400 font-semibold hover:underline">
+            <i class="fa-solid fa-trash-can mr-1"></i> Reset All Learning Progress
+          </button>
+        </div>
+      `;
+    }
+
+    function openLessonInDictionary(lessonId) {
+      state.selectedLesson = String(lessonId);
+      state.filterStatus = 'all';
+      switchTab('dictionary');
+    }
+
+    function openLessonInFlashcards(lessonId) {
+      state.fcLesson = String(lessonId);
+      state.fcIndex = 0;
+      state.fcFlipped = false;
+      switchTab('flashcards');
+    }
+
+    function setupAndroidPWA() {
+      try {
+        const svgIcon = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><rect width="512" height="512" rx="110" fill="#064E3B"/><text x="256" y="310" font-size="220" text-anchor="middle" fill="#FBBF24" font-family="serif">📖</text></svg>`;
+        const iconUrl = 'data:image/svg+xml;base64,' + btoa(unescape(encodeURIComponent(svgIcon)));
+        const manifestObj = {
+          name: 'Quranic Dictionary - 500 Words',
+          short_name: 'Quranic Dict',
+          description: 'Learn 500 Essential Quranic Words with Urdu & English Meanings',
+          start_url: './',
+          display: 'standalone',
+          background_color: '#064E3B',
+          theme_color: '#064E3B',
+          orientation: 'portrait',
+          icons: [
+            { src: iconUrl, sizes: '192x192', type: 'image/svg+xml', purpose: 'any maskable' },
+            { src: iconUrl, sizes: '512x512', type: 'image/svg+xml', purpose: 'any maskable' }
+          ]
+        };
+        const manifestBlob = new Blob([JSON.stringify(manifestObj)], { type: 'application/manifest+json' });
+        const manifestLink = document.getElementById('pwaManifestLink');
+        if (manifestLink) {
+          manifestLink.href = URL.createObjectURL(manifestBlob);
+        }
+
+        if ('serviceWorker' in navigator && window.location.protocol.startsWith('http')) {
+          const swCode = `
+            self.addEventListener('install', e => self.skipWaiting());
+            self.addEventListener('activate', e => e.waitUntil(self.clients.claim()));
+            self.addEventListener('notificationclick', e => {
+              e.notification.close();
+              e.waitUntil(
+                self.clients.matchAll({ type: 'window', includeUncontrolled: true }).then(clients => {
+                  if (clients.length > 0) return clients[0].focus();
+                  return self.clients.openWindow('./');
+                })
+              );
+            });
+          `;
+          const swBlob = new Blob([swCode], { type: 'application/javascript' });
+          navigator.serviceWorker.register(URL.createObjectURL(swBlob)).catch(() => {});
+        }
+      } catch (e) {}
+    }
+
+    function resetAllProgress() {
+      state.learnedIds = [];
+      state.bookmarkedIds = [];
+      state.quizHighScore = 0;
+      saveState();
+      showToast('All progress has been reset');
+      renderCurrentTab();
+    }
+
+    // ================= INITIALIZE APP ON LOAD =================
+    function dismissWelcomeModal() {
+      closeModal('welcomeModal');
+      try {
+        localStorage.setItem('quranic_dict_intro_seen_v1', 'true');
+      } catch (e) {}
+    }
+
+    let splashTimer = null;
+    function startSplashSequence(forceShowWelcome = false) {
+      const splash = document.getElementById('splashScreen');
+      const bar = document.getElementById('splashProgressBar');
+      const pctText = document.getElementById('splashPercentText');
+      const statusText = document.getElementById('splashStatusText');
+      if (!splash) return;
+
+      clearInterval(splashTimer);
+      splash.classList.remove('hidden', 'opacity-0', 'pointer-events-none');
+      if (bar) bar.style.width = '0%';
+      if (pctText) pctText.textContent = '0%';
+
+      let progress = 0;
+      splashTimer = setInterval(() => {
+        progress += 10;
+        if (progress > 100) progress = 100;
+        if (bar) bar.style.width = progress + '%';
+        if (pctText) pctText.textContent = progress + '%';
+
+        if (statusText) {
+          if (progress < 40) statusText.textContent = 'Quranic Alfaaz Load Ho Rahe Hain...';
+          else if (progress < 80) statusText.textContent = 'Namaz Duain Aur Ambiya Qissay...';
+          else statusText.textContent = 'MashaAllah! Tayyar Hai';
+        }
+
+        if (progress >= 100) {
+          clearInterval(splashTimer);
+          setTimeout(() => {
+            splash.classList.add('opacity-0', 'pointer-events-none');
+            setTimeout(() => {
+              splash.classList.add('hidden');
+              let introSeen = false;
+              try {
+                introSeen = localStorage.getItem('quranic_dict_intro_seen_v1') === 'true';
+              } catch (e) {}
+              if (forceShowWelcome || !introSeen) {
+                openModal('welcomeModal');
+              }
+            }, 350);
+          }, 200);
+        }
+      }, 120);
+    }
+
+    window.addEventListener('DOMContentLoaded', () => {
+      setupAndroidPWA();
+      loadState();
+      updateHeaderProgress();
+      switchTab('dictionary');
+      checkScheduledReminder();
+      setInterval(checkScheduledReminder, 30000);
+      startSplashSequence(false);
+    });
+  </script>
+</body>
+</html>
